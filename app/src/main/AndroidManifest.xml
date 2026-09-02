@@ -33,6 +33,11 @@
             >
 
         </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false">
+
+        </activity>
     </application>
 
 </manifest>

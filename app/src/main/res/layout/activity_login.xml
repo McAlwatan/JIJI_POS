@@ -30,7 +30,7 @@
         android:id="@+id/textLoginSubtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Access your JIJI POS dashboard securely"
+        android:text="@string/loginDescription"
         android:textColor="@color/white"
         android:alpha="0.8"
         android:layout_marginBottom="40dp" />
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:hint="Phone Number"
+        android:hint="@string/loginPhoneHint"
         android:textColorHint="@color/white"
         app:hintTextColor="@color/white"
         app:boxStrokeColor="@color/white"
@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:hint="Password"
+        android:hint="@string/loginPasswordHint"
         android:textColorHint="@color/white"
         app:hintTextColor="@color/white"
         app:boxStrokeColor="@color/white"
@@ -90,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="63dp"
         android:backgroundTint="@color/red"
-        android:text="SIGN IN"
+        android:text="@string/loginBtn"
         android:textSize="16sp"
         android:textStyle="bold"
         app:cornerRadius="13dp" />
@@ -114,7 +114,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OR"
+            android:text="@string/or"
             android:textSize="15sp"
             android:textColor="@color/white"
             android:layout_marginLeft="10dp"
@@ -139,6 +139,33 @@
         android:layout_gravity="center"
         app:cornerRadius="20dp"
         />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account? "
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/textSignUpLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:padding="8dp" />
+    </LinearLayout>
+
+
+
 
 
 </LinearLayout>

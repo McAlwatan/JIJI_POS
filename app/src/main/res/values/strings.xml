@@ -10,4 +10,9 @@
     </string>
     <string name="splashLoginBtn">Login</string>
     <string name="splashRegisterBtn">Create an Account</string>
+    <string name="loginDescription">Access your JIJI POS dashboard securely</string>
+    <string name="loginPhoneHint">Phone Number</string>
+    <string name="loginPasswordHint">Password</string>
+    <string name="loginBtn">SIGN IN</string>
+    <string name="or">OR</string>
 </resources>
