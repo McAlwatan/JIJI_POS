@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">JIJI POS</string>
+    <string name="welcome_note">
+        JIJI POS, Pay and Sell them your way
+    </string>
+    <string name="splash_desc">
+        The ultimate business partner fast, smart,
+        and reliable.Track every coin and
+        manage your shop
+    </string>
+    <string name="splashLoginBtn">Login</string>
+    <string name="splashRegisterBtn">Create an Account</string>
+</resources>
