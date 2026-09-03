@@ -21,8 +21,8 @@ public class WelcomeActivity extends AppCompatActivity {
         });
 
         btnSplashRegister.setOnClickListener(v -> {
-            // Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
-            // startActivity(intent);
+            Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 }

@@ -38,6 +38,12 @@
             android:exported="false">
 
         </activity>
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="false"
+            >
+
+        </activity>
     </application>
 
 </manifest>

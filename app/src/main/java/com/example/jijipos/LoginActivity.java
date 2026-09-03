@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(user.getPasswordHash().equals(encryptedInputPassword)){
                     Toast.makeText(LoginActivity.this, "Welcome back" + user.getFullName(), Toast.LENGTH_LONG).show();
-                    routeUsertoDashboard(user);
+                    routeUserToDashboard(user);
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid credential mismatch", Toast.LENGTH_LONG).show();
                 }
@@ -75,22 +75,33 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void routeUsertoDashboard(User user){
-        Intent intent;
+    private void routeUserToDashboard(User user) {
+        String role = user.getRole();
+        if (role == null) role = "CUSTOMER";
 
-        switch (user.getRole().toUpperCase()){
+        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+
+        intent.putExtra("USER_NAME", user.getFullName());
+        intent.putExtra("USER_ROLE", role.trim().toUpperCase());
+        switch (role.toUpperCase().trim()) {
             case "CUSTOMER":
-                Toast.makeText(LoginActivity.this, "Routing to customer space...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Routing to Customer space...", Toast.LENGTH_SHORT).show();
                 break;
             case "CASHIER":
-                Toast.makeText(LoginActivity.this, "Routing to cashier workspace...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Routing to Cashier workspace...", Toast.LENGTH_SHORT).show();
                 break;
             case "MANAGER":
-                Toast.makeText(LoginActivity.this, "Routing to manager workspace...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Routing to Manager workspace...", Toast.LENGTH_SHORT).show();
                 break;
             default:
-                Toast.makeText(LoginActivity.this, "System admin bypass access unconfigured", Toast.LENGTH_SHORT).show();
-                return;
+                Toast.makeText(LoginActivity.this, "System admin bypass access unconfigured.", Toast.LENGTH_SHORT).show();
+                break;
         }
+
+        // 4. Launch the intent transaction and wipe the Login activity off the memory stack
+        startActivity(intent);
+        finish();
     }
+
+
 }

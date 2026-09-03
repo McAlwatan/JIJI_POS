@@ -9,6 +9,7 @@
         manage your shop
     </string>
     <string name="splashLoginBtn">Login</string>
+    <string name="login">Login</string>
     <string name="splashRegisterBtn">Create an Account</string>
     <string name="loginDescription">Access your JIJI POS dashboard securely</string>
     <string name="loginPhoneHint">Phone Number</string>

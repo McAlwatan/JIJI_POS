@@ -2,9 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#A40413</color>
-    <color name="greyish">#292929</color>
-    <color name="light_grey">#E6E6E6</color>
-    <color name="light_black">#3D3D3D</color>
-    <color name="redish">#78030B</color>
+    <color name="red">#E53E3E</color>
+    <color name="light_black">#1A1A1A</color>
+    <color name="bg_dark">#10231E</color>
+    <color name="card_dark">#1A322C</color>
+    <color name="input_bg">#152722</color>
+    <color name="teal_primary">#1F8A6E</color>
+    <color name="teal_light">#3DBFA0</color>
+    <color name="text_muted">#9CB3AD</color>
+    <color name="divider">#2A423B</color>
+    <color name="redish">#AD0006</color>
 </resources>
