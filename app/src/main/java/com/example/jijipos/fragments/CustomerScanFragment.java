@@ -1,6 +1,7 @@
 package com.example.jijipos.fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.jijipos.R;
+import com.example.jijipos.StorageManager;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
@@ -73,16 +75,34 @@ public class CustomerScanFragment extends Fragment {
 
         cameraExecutor = Executors.newSingleThreadExecutor();
 
-        // Configure footer action clicks
         buttonScanAgain.setOnClickListener(v -> resetScannerState());
         buttonScanContinue.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Processing receipt entry payload...", Toast.LENGTH_SHORT).show();
         });
-
-        // AUTOMATIC INSTANT LAUNCH INVOCATION SEQUENCE
         checkPermissionsAndAutoLaunch();
-
         return view;
+    }
+
+    private void executeBackgroundStorageMaintenance() {
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            Context context = getContext();
+            if (context == null) return;
+
+            // Enforce a strict 50 MB local storage ceiling rule safety barrier
+            if (StorageManager.isStorageLimitExceeded(context, 50.0)) {
+                android.util.Log.w("JIJI_STORAGE", "Local DB size exceeded 50MB! Cleaning old history...");
+
+                // Calculate time window limit matching exactly 3 months ago (90 Days)
+                long ninetyDaysInMillis = 90L * 24L * 60L * 60L * 1000L;
+                long threeMonthsCutoffTimestamp = System.currentTimeMillis() - ninetyDaysInMillis;
+
+                // Run pruning query directly via the AppDatabase engine instance
+                com.example.jijipos.database.AppDatabase db = com.example.jijipos.database.AppDatabase.getInstance(context);
+                int rowsDeleted = db.transactionDao().pruneOldLocalHistory(threeMonthsCutoffTimestamp);
+
+                android.util.Log.i("JIJI_STORAGE", "Storage optimization complete. Purged " + rowsDeleted + " old local receipt records.");
+            }
+        });
     }
 
     private void checkPermissionsAndAutoLaunch() {
@@ -156,15 +176,78 @@ public class CustomerScanFragment extends Fragment {
     private void handleSuccessfulBarcodeExtraction(String rawValue) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
-                // Instantly update presentation frames directly matching your UI requirements layout
-                layoutScanSuccessHeader.setVisibility(View.VISIBLE);
-                textScanResultHint.setVisibility(View.GONE);
-                textScanResultData.setText("Decoded Receipt Payload:\n\n" + rawValue);
-                layoutScanActionsGroup.setVisibility(View.VISIBLE);
-                Toast.makeText(getContext(), "Scan successful!", Toast.LENGTH_SHORT).show();
+                try {
+                    // 1. Unpack the raw JSON string elements securely
+                    org.json.JSONObject dataObj = new org.json.JSONObject(rawValue);
+                    String itemName = dataObj.getString("item_name");
+                    String itemPrice = dataObj.getString("item_price");
+                    String location = dataObj.getString("store_location");
+                    String readableDate = dataObj.getString("date_readable");
+                    long timestamp = dataObj.getLong("timestamp");
+
+                    // Parse out currency symbols to save clean double data values to the database
+                    double numericalPrice = Double.parseDouble(itemPrice.replaceAll("[^0-9.]", ""));
+
+                    // 2. Build the Custom Alert Dialog Box overlay
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
+                    View dialogView = getLayoutInflater().inflate(R.layout.dialog_receipt_success, null);
+                    builder.setView(dialogView);
+
+                    android.app.AlertDialog dialog = builder.create();
+                    if (dialog.getWindow() != null) {
+                        dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    }
+
+                    // 3. Bind parsed text data into dialog view nodes
+                    TextView dName = dialogView.findViewById(R.id.dialogItemName);
+                    TextView dPrice = dialogView.findViewById(R.id.dialogItemPrice);
+                    TextView dLoc = dialogView.findViewById(R.id.dialogLocation);
+                    TextView dDate = dialogView.findViewById(R.id.dialogDate);
+                    Button btnCancel = dialogView.findViewById(R.id.dialogButtonCancel);
+                    Button btnSave = dialogView.findViewById(R.id.dialogButtonSave);
+
+                    dName.setText("🛒 Item: " + itemName);
+                    dPrice.setText("Amount: " + itemPrice);
+                    dLoc.setText("📍 Location: " + location);
+                    dDate.setText("📅 Date: " + readableDate);
+
+                    // 4. Set up interactive buttons workflows
+                    btnCancel.setOnClickListener(v -> {
+                        dialog.dismiss();
+                        resetScannerState(); // Resume live scanning stream loop
+                    });
+
+                    btnSave.setOnClickListener(v -> {
+                        // Create structural transaction record linked to Customer session storage tracking
+                        // (Using mock business/cashier context IDs for local validation tracking layers)
+                        com.example.jijipos.database.entity.Transaction newReceiptRecord = new com.example.jijipos.database.entity.Transaction(
+                                1L, 1L, 99L, numericalPrice, "Shopping", timestamp, false
+                        );
+
+                        // Safely commit history payload records off the main thread runner pipeline
+                        com.example.jijipos.repository.TransactionRepository repo = new com.example.jijipos.repository.TransactionRepository(requireContext());
+                        repo.insertTransaction(newReceiptRecord, newId -> {
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(() -> {
+                                    Toast.makeText(getContext(), "Receipt saved to history logs!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    resetScannerState();
+                                });
+                            }
+                        });
+                    });
+
+                    dialog.show();
+
+                } catch (org.json.JSONException | NumberFormatException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Invalid JIJI POS Receipt Code format!", Toast.LENGTH_LONG).show();
+                    resetScannerState();
+                }
             });
         }
     }
+
 
     private void resetScannerState() {
         isScanThrottled = false;
@@ -181,4 +264,5 @@ public class CustomerScanFragment extends Fragment {
         super.onDestroyView();
         cameraExecutor.shutdown(); // Safely terminate threaded workers pool to prevent memory leaks
     }
+
 }

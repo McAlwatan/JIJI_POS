@@ -16,7 +16,7 @@ public class InventoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content, container, false);
         TextView title = view.findViewById(R.id.textFragmentTitle);
-        title.setText("📦 Inventory Controls\n\n• Track Physical Stock Levels\n• Restock Adjustments Logs");
+        title.setText("Inventory Controls\n\n• Track Physical Stock Levels\n• Restock Adjustments Logs");
         return view;
     }
 }

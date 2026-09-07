@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText inputPhone, inputPassword;
-    private Button buttonLogin, buttonCancelLogin;
+    private Button buttonLogin;
     private UserRepository userRepository;
 
     private TextView textSignUpLink;
@@ -98,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
 
-        // 4. Launch the intent transaction and wipe the Login activity off the memory stack
         startActivity(intent);
         finish();
     }

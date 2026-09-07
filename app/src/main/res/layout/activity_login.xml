@@ -16,15 +16,16 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="72dp" />
+            android:layout_height="56dp" />
 
+        <!-- Logo badge -->
         <androidx.cardview.widget.CardView
             android:layout_width="84dp"
             android:layout_height="84dp"
             android:layout_gravity="center"
             app:cardCornerRadius="24dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/teal_primary"
+            app:cardBackgroundColor="@color/red"
             android:layout_marginBottom="28dp">
 
             <ImageView
@@ -63,7 +64,7 @@
             app:cardCornerRadius="24dp"
             app:cardElevation="0dp"
             app:cardBackgroundColor="@color/card_dark"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -78,8 +79,8 @@
                     android:layout_marginBottom="16dp"
                     android:hint="@string/loginPhoneHint"
                     android:textColorHint="@color/text_muted"
-                    app:hintTextColor="@color/teal_light"
-                    app:boxStrokeColor="@color/teal_light"
+                    app:hintTextColor="@color/red_light"
+                    app:boxStrokeColor="@color/red_light"
                     app:boxStrokeWidth="1.5dp"
                     app:boxBackgroundColor="@color/input_bg"
                     app:boxCornerRadiusTopStart="16dp"
@@ -103,8 +104,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/loginPasswordHint"
                     android:textColorHint="@color/text_muted"
-                    app:hintTextColor="@color/teal_light"
-                    app:boxStrokeColor="@color/teal_light"
+                    app:hintTextColor="@color/red_light"
+                    app:boxStrokeColor="@color/red_light"
                     app:boxStrokeWidth="1.5dp"
                     app:boxBackgroundColor="@color/input_bg"
                     app:boxCornerRadiusTopStart="16dp"
@@ -112,7 +113,7 @@
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusBottomEnd="16dp"
                     app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@color/teal_light"
+                    app:passwordToggleTint="@color/red_light"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -127,11 +128,43 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Remember me / Forgot password row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
+
+            <CheckBox
+                android:id="@+id/checkboxRememberMe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rememberMe"
+                android:textColor="@color/text_muted"
+                android:textSize="13sp"
+                app:buttonTint="@color/red" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/forgotPassword"
+                android:textColor="@color/red_light"
+                android:textStyle="bold"
+                android:textSize="13sp" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:backgroundTint="@color/teal_primary"
+            android:backgroundTint="@color/red"
             android:text="@string/loginBtn"
             android:textSize="15sp"
             android:textAllCaps="true"
@@ -170,32 +203,81 @@
                 android:background="@color/divider" />
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
+        <!-- Social login row: Google / Apple / Facebook -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/card_dark">
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="28dp">
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="match_parent"
+            <androidx.cardview.widget.CardView
+                android:layout_width="52dp"
                 android:layout_height="52dp"
-                android:layout_gravity="center" />
-        </androidx.cardview.widget.CardView>
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/card_dark"
+                android:layout_marginEnd="14dp">
+
+                <ImageButton
+                    android:id="@+id/buttonGoogleLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_google"
+                    android:padding="14dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/loginWithGoogle" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/card_dark"
+                android:layout_marginEnd="14dp">
+
+                <ImageButton
+                    android:id="@+id/buttonAppleLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_apple"
+                    app:tint="@color/white"
+                    android:padding="14dp"
+                    android:scaleType="fitCenter" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/card_dark">
+
+                <ImageButton
+                    android:id="@+id/buttonFacebookLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_facebook"
+                    android:padding="14dp"
+                    android:scaleType="fitCenter" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="28dp"
             android:layout_marginBottom="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Don't have an account? "
+                android:text="@string/dontHaveAccoun"
                 android:textColor="@color/text_muted"
                 android:textSize="14sp" />
 
@@ -203,8 +285,8 @@
                 android:id="@+id/textSignUpLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign Up"
-                android:textColor="@color/teal_light"
+                android:text="@string/signUp"
+                android:textColor="@color/red_light"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:padding="4dp" />

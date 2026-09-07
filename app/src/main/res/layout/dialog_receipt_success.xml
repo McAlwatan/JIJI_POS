@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://android.com"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#121212"
+    android:padding="24dp">
+
+    <!-- Success Checkmark Icon Badge -->
+    <ImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@android:drawable/checkbox_on_background"
+        app:tint="@color/red"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Receipt Scanned Successfully"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Formatted Details Grid Data Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#1AFFFFFF"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:id="@+id/dialogItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item: Loading..."
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/dialogItemPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Amount: TZS 0.00"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/dialogLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location: Unknown"
+            android:textColor="@color/white"
+            android:alpha="0.7"
+            android:textSize="13sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/dialogDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date: --/--/----"
+            android:textColor="@color/white"
+            android:alpha="0.7"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <!-- Interactive Execution Actions Footer Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dialogButtonCancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Discard"
+            android:textColor="@color/white"
+            android:backgroundTint="#33FFFFFF"
+            app:cornerRadius="13dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/dialogButtonSave"
+            android:layout_width="0dp"
+            android:layout_weight="1.3"
+            android:layout_height="match_parent"
+            android:text="Save History"
+            android:textColor="@color/white"
+            android:backgroundTint="#427BFF"
+            app:cornerRadius="13dp"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+</LinearLayout>

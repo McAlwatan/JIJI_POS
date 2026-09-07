@@ -16,7 +16,7 @@ public class CustomerHomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content, container, false);
         TextView title = view.findViewById(R.id.textFragmentTitle);
-        title.setText("📱 Customer Personal Hub\n\n• Track Daily Expenses\n• Claim Free Promos\n• View All Your Active Receipts");
+        title.setText("Customer Personal Hub\n\n• Track Daily Expenses\n• Claim Free Promos\n• View All Your Active Receipts");
         return view;
     }
 }

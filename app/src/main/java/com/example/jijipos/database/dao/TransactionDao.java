@@ -28,4 +28,7 @@ public interface TransactionDao {
     // Month 2 Core: Aggregates personal spending totals for a standalone Customer account
     @Query("SELECT SUM(totalAmount) FROM transactions WHERE customerId = :customerId AND isRefunded = 0 AND timestamp BETWEEN :startTime AND :endTime")
     double getCustomerSpendingTotal(long customerId, long startTime, long endTime);
+
+    @Query("DELETE FROM transactions WHERE timestamp < :cutoffTimestamp")
+    int pruneOldLocalHistory(long cutoffTimestamp);
 }

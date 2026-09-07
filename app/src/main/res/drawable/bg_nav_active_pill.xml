@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Active background block matches your signature action color -->
-    <solid android:color="@color/red" />
-    <!-- Smoothly rounded inner accent edges -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#26E63946" />
     <corners android:radius="16dp" />
+    <stroke
+        android:width="1dp"
+        android:color="@color/red" />
 </shape>

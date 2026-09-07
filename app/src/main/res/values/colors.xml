@@ -4,12 +4,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#E53E3E</color>
     <color name="light_black">#1A1A1A</color>
-    <color name="bg_dark">#10231E</color>
-    <color name="card_dark">#1A322C</color>
-    <color name="input_bg">#152722</color>
+    <color name="bg_dark">#0D0D0D</color>
+    <color name="card_dark">#1C1C1E</color>
+    <color name="input_bg">#2A2A2C</color>
     <color name="teal_primary">#1F8A6E</color>
     <color name="teal_light">#3DBFA0</color>
-    <color name="text_muted">#9CB3AD</color>
-    <color name="divider">#2A423B</color>
+    <color name="text_muted">#9E9E9E</color>
+    <color name="divider">#333333</color>
     <color name="redish">#AD0006</color>
+    <color name="red_light">#FF6B6B</color>
 </resources>

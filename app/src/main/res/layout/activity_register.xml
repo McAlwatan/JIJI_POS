@@ -18,10 +18,13 @@
             android:layout_height="32dp" />
 
         <ImageView
+            android:id="@+id/buttonBack"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
             app:tint="@color/white"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="20dp"
+            android:contentDescription="@string/back" />
 
         <TextView
             android:layout_width="match_parent"
@@ -47,7 +50,7 @@
             app:cardCornerRadius="24dp"
             app:cardElevation="0dp"
             app:cardBackgroundColor="@color/card_dark"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,8 +64,8 @@
                     android:layout_marginBottom="16dp"
                     android:hint="Full Name"
                     android:textColorHint="@color/text_muted"
-                    app:hintTextColor="@color/teal_light"
-                    app:boxStrokeColor="@color/teal_light"
+                    app:hintTextColor="@color/red_light"
+                    app:boxStrokeColor="@color/red_light"
                     app:boxStrokeWidth="1.5dp"
                     app:boxBackgroundColor="@color/input_bg"
                     app:boxCornerRadiusTopStart="16dp"
@@ -86,8 +89,8 @@
                     android:layout_marginBottom="16dp"
                     android:hint="Phone Number"
                     android:textColorHint="@color/text_muted"
-                    app:hintTextColor="@color/teal_light"
-                    app:boxStrokeColor="@color/teal_light"
+                    app:hintTextColor="@color/red_light"
+                    app:boxStrokeColor="@color/red_light"
                     app:boxStrokeWidth="1.5dp"
                     app:boxBackgroundColor="@color/input_bg"
                     app:boxCornerRadiusTopStart="16dp"
@@ -128,6 +131,7 @@
                         android:layout_height="52dp"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
+                        android:popupBackground="@color/card_dark"
                         android:spinnerMode="dropdown"/>
                 </androidx.cardview.widget.CardView>
 
@@ -136,8 +140,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Password"
                     android:textColorHint="@color/text_muted"
-                    app:hintTextColor="@color/teal_light"
-                    app:boxStrokeColor="@color/teal_light"
+                    app:hintTextColor="@color/red_light"
+                    app:boxStrokeColor="@color/red_light"
                     app:boxStrokeWidth="1.5dp"
                     app:boxBackgroundColor="@color/input_bg"
                     app:boxCornerRadiusTopStart="16dp"
@@ -145,7 +149,7 @@
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusBottomEnd="16dp"
                     app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@color/teal_light"
+                    app:passwordToggleTint="@color/red_light"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -164,7 +168,7 @@
             android:id="@+id/buttonRegisterSubmit"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:backgroundTint="@color/teal_primary"
+            android:backgroundTint="@color/red"
             android:text="CREATE ACCOUNT"
             android:textSize="15sp"
             android:textColor="@color/white"
@@ -173,28 +177,122 @@
             app:cornerRadius="16dp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="14dp"
-            android:orientation="vertical"/>
-
-        <Button
-            android:id="@+id/buttonBackToLogin"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:backgroundTint="@color/card_dark"
-            android:text="BACK TO SIGN IN"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:elevation="0dp"
-            app:cornerRadius="16dp"
-            app:strokeColor="@color/divider"
-            app:strokeWidth="1dp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="20dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/divider" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/or"
+                android:textSize="13sp"
+                android:textColor="@color/text_muted"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/divider" />
+        </LinearLayout>
+
+        <!-- Social sign up row: Google / Apple / Facebook -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="28dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/card_dark"
+                android:layout_marginEnd="14dp">
+
+                <ImageButton
+                    android:id="@+id/buttonGoogleSignUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_google"
+                    android:padding="14dp"
+                    android:scaleType="fitCenter" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/card_dark"
+                android:layout_marginEnd="14dp">
+
+                <ImageButton
+                    android:id="@+id/buttonAppleSignUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_apple"
+                    app:tint="@color/white"
+                    android:padding="14dp"
+                    android:scaleType="fitCenter" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/card_dark">
+
+                <ImageButton
+                    android:id="@+id/buttonFacebookSignUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_facebook"
+                    android:padding="14dp"
+                    android:scaleType="fitCenter" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:orientation="vertical"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alreadyHaveAccount"
+                android:textColor="@color/text_muted"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textLoginLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login"
+                android:textColor="@color/red_light"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:padding="4dp" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

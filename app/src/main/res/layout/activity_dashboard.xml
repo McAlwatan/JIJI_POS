@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://android.com"
-    xmlns:tools="http://android.com"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_black"
+    android:background="@color/bg_dark"
     android:orientation="vertical"
     android:padding="28dp"
     tools:context=".DashboardActivity">
 
-    <!-- Header Section Layout Banner -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +20,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/imageProfilePlaceholder">
+            android:layout_toStartOf="@id/imageProfilePlaceholder"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp">
 
             <TextView
                 android:id="@+id/textWelcomeBanner"
@@ -29,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="Habari, User!"
                 android:textColor="@color/white"
-                android:textSize="28sp"
+                android:textSize="26sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -37,62 +38,57 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Welcome to your central workspace"
-                android:textColor="@color/white"
-                android:alpha="0.7"
-                android:textSize="14sp"
+                android:textColor="@color/text_muted"
+                android:textSize="13sp"
                 android:layout_marginTop="2dp"/>
         </LinearLayout>
 
-        <!-- Frosted Glass Role Status Badge Component -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/imageProfilePlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            app:cardCornerRadius="10dp"
+            android:layout_centerVertical="true"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="1dp"
-            app:strokeColor="#40FFFFFF"
-            android:backgroundTint="#20FFFFFF">
+            app:strokeColor="@color/red_light"
+            app:cardBackgroundColor="@color/card_dark">
 
             <TextView
                 android:id="@+id/textRoleTag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UNKNOWN"
-                android:textColor="@color/white"
+                android:textColor="@color/red_light"
                 android:textSize="11sp"
                 android:textStyle="bold"
+                android:letterSpacing="0.05"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp" />
         </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>
 
-    <!-- Content Workspace Section Area Title Label -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="AVAILABLE ACTIONS"
-        android:textColor="@color/white"
+        android:textColor="@color/text_muted"
         android:textSize="12sp"
         android:textStyle="bold"
-        android:alpha="0.6"
         android:letterSpacing="0.1"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Central Interactive Display Panel Base Box Frame -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:cardCornerRadius="16dp"
+        app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
         app:strokeWidth="1dp"
-        app:strokeColor="#30FFFFFF"
-        android:backgroundTint="#15FFFFFF">
+        app:strokeColor="@color/divider"
+        app:cardBackgroundColor="@color/card_dark">
 
-        <!-- FIXED FRAME LAYOUT CONTAINER PLUGGED IN NATIVELY HERE -->
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
@@ -105,20 +101,25 @@
         android:layout_height="16dp"
         android:orientation="vertical" />
 
-    <!-- Action Log Out Button Blueprint Element -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonLogout"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
-        android:layout_height="63dp"
-        android:backgroundTint="@color/white"
+        android:layout_height="58dp"
+        android:backgroundTint="@color/card_dark"
         android:text="LOG OUT SYSTEM"
-        android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textColor="@color/red_light"
+        android:textSize="15sp"
         android:textStyle="bold"
-        app:cornerRadius="13dp" />
+        android:letterSpacing="0.03"
+        app:cornerRadius="16dp"
+        app:strokeColor="@color/red"
+        app:strokeWidth="1.5dp"
+        app:icon="@drawable/ic_logout"
+        app:iconTint="@color/red_light"
+        app:iconGravity="textStart" />
 
-    <!-- CUSTOM ARTIFACT BOTTOM CUSTOM VIEW NAVIGATION CONTAINER BAR -->
-    <!-- UNIVERSAL ADAPTIVE BOTTOM NAVIGATION CONTAINER BAR -->
+    <!-- Bottom navigation -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="72dp"
@@ -128,7 +129,6 @@
         android:paddingHorizontal="8dp"
         android:layout_marginTop="16dp">
 
-        <!-- SLOT 1 -->
         <LinearLayout
             android:id="@+id/tab1"
             android:layout_width="0dp"
@@ -137,27 +137,32 @@
             android:background="@drawable/bg_nav_active_pill"
             android:orientation="horizontal"
             android:gravity="center"
-            android:paddingHorizontal="10dp">
+            android:paddingHorizontal="10dp"
+            android:clickable="true"
+            android:focusable="true">
             <ImageView
                 android:id="@+id/icon1"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/ic_nav_home"
-                app:tint="@color/white" />
+                app:tint="@color/red_light" />
             <TextView
                 android:id="@+id/text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Home"
-                android:textColor="@color/white"
+                android:textColor="@color/red_light"
                 android:textStyle="bold"
                 android:textSize="13sp"
                 android:layout_marginStart="6dp" />
         </LinearLayout>
 
-        <View android:id="@+id/divider1" android:layout_width="1dp" android:layout_height="24dp" android:background="#15FFFFFF" />
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="1dp"
+            android:layout_height="24dp"
+            android:background="@color/divider" />
 
-        <!-- SLOT 2 -->
         <LinearLayout
             android:id="@+id/tab2"
             android:layout_width="0dp"
@@ -170,10 +175,10 @@
             android:focusable="true">
             <ImageView
                 android:id="@+id/icon2"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/ic_nav_sales"
-                app:tint="#88FFFFFF" />
+                app:tint="@color/text_muted" />
             <TextView
                 android:id="@+id/text2"
                 android:layout_width="wrap_content"
@@ -186,9 +191,12 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-        <View android:id="@+id/divider2" android:layout_width="1dp" android:layout_height="24dp" android:background="#15FFFFFF" />
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="1dp"
+            android:layout_height="24dp"
+            android:background="@color/divider" />
 
-        <!-- SLOT 3 -->
         <LinearLayout
             android:id="@+id/tab3"
             android:layout_width="0dp"
@@ -201,10 +209,10 @@
             android:focusable="true">
             <ImageView
                 android:id="@+id/icon3"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/ic_nav_inventory"
-                app:tint="#88FFFFFF" />
+                app:tint="@color/text_muted" />
             <TextView
                 android:id="@+id/text3"
                 android:layout_width="wrap_content"
@@ -217,9 +225,12 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-        <View android:id="@+id/divider3" android:layout_width="1dp" android:layout_height="24dp" android:background="#15FFFFFF" />
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="1dp"
+            android:layout_height="24dp"
+            android:background="@color/divider" />
 
-        <!-- SLOT 4 -->
         <LinearLayout
             android:id="@+id/tab4"
             android:layout_width="0dp"
@@ -232,10 +243,10 @@
             android:focusable="true">
             <ImageView
                 android:id="@+id/icon4"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/ic_nav_staff"
-                app:tint="#88FFFFFF" />
+                app:tint="@color/text_muted" />
             <TextView
                 android:id="@+id/text4"
                 android:layout_width="wrap_content"
@@ -249,7 +260,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
 
 </LinearLayout>

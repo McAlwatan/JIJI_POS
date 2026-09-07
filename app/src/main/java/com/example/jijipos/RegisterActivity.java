@@ -16,7 +16,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private TextInputEditText registerName, registerPhone, registerPassword;
     private Spinner spinnerRoles;
-    private Button buttonRegisterSubmit, buttonBackToLogin;
+    private Button buttonRegisterSubmit;
     private UserRepository userRepository;
 
     @Override
@@ -31,7 +31,6 @@ public class RegisterActivity extends AppCompatActivity {
         registerPassword = findViewById(R.id.registerPassword);
         spinnerRoles = findViewById(R.id.spinnerRoles);
         buttonRegisterSubmit = findViewById(R.id.buttonRegisterSubmit);
-        buttonBackToLogin = findViewById(R.id.buttonBackToLogin);
 
         String[] accountTypes = {"Customer", "Cashier", "Manager"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -39,7 +38,6 @@ public class RegisterActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRoles.setAdapter(adapter);
         buttonRegisterSubmit.setOnClickListener(v -> processFormSubmission());
-        buttonBackToLogin.setOnClickListener(v -> finish());
     }
 
     private void processFormSubmission() {
@@ -68,8 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
                 if (existingUser != null) {
                     Toast.makeText(RegisterActivity.this, "This phone number is already registered!", Toast.LENGTH_LONG).show();
                 } else {
-                    // Create structural entity user object payload to commit to Room storage
-                    // Set parent business constraint to null for early standalone sign-ups
                     User newUser = new User(name, phone, encryptedPassword, selectedRole, null);
                     
                     userRepository.insertUser(newUser, newId -> {

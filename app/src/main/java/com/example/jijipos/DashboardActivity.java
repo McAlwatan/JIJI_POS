@@ -13,13 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.example.jijipos.fragments.HomeFragment;
-import com.example.jijipos.fragments.SalesFragment;
-import com.example.jijipos.fragments.InventoryFragment;
-import com.example.jijipos.fragments.StaffFragment;
 import com.example.jijipos.fragments.CustomerHomeFragment;
 import com.example.jijipos.fragments.CustomerScanFragment;
+import com.example.jijipos.fragments.SalesFragment;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -37,7 +33,6 @@ public class DashboardActivity extends AppCompatActivity {
         TextView textRoleTag = findViewById(R.id.textRoleTag);
         Button buttonLogout = findViewById(R.id.buttonLogout);
 
-        // Bind core generic structural nav widgets
         LinearLayout tab1 = findViewById(R.id.tab1);
         LinearLayout tab2 = findViewById(R.id.tab2);
         LinearLayout tab3 = findViewById(R.id.tab3);
@@ -53,6 +48,7 @@ public class DashboardActivity extends AppCompatActivity {
         TextView text3 = findViewById(R.id.text3);
         TextView text4 = findViewById(R.id.text4);
 
+        View divider1 = findViewById(R.id.divider1);
         View divider2 = findViewById(R.id.divider2);
         View divider3 = findViewById(R.id.divider3);
 
@@ -70,77 +66,69 @@ public class DashboardActivity extends AppCompatActivity {
         textWelcomeBanner.setText("Habari, " + userName + "!");
         textRoleTag.setText(" " + userRole.toUpperCase().trim() + " ");
 
-        // ========================================================
-        // DYNAMIC WORKSPACE CONFIGURATION PIPELINE
-        // ========================================================
         if (userRole.equalsIgnoreCase("CUSTOMER")) {
-            // CUSTOMER DASHBOARD CONFIGURATION (2 Tabs)
             text1.setText("Home");
             icon1.setImageResource(R.drawable.ic_nav_home);
 
             text2.setText("Scan QR");
             icon2.setImageResource(R.drawable.ic_nav_scan);
 
-            // Hide unused tab slots completely
-            tab3.setVisibility(View.GONE);
+            text3.setText("History");
+            icon3.setImageResource(android.R.drawable.ic_menu_agenda);
+
             tab4.setVisibility(View.GONE);
-            divider2.setVisibility(View.GONE);
             divider3.setVisibility(View.GONE);
 
-            // Set up customer specific screen routing paths
             tab1.setOnClickListener(v -> { loadFragment(new CustomerHomeFragment()); updateNavbarState(0); });
             tab2.setOnClickListener(v -> { loadFragment(new CustomerScanFragment()); updateNavbarState(1); });
+            tab3.setOnClickListener(v -> { /* loadFragment(new CustomerReceiptsFragment()); */ updateNavbarState(2); });
 
-            // Load default customer workspace
             loadFragment(new CustomerHomeFragment());
             updateNavbarState(0);
 
         } else if (userRole.equalsIgnoreCase("CASHIER")) {
-            // CASHIER DASHBOARD CONFIGURATION (3 Tabs)
             text1.setText("Home");
             icon1.setImageResource(R.drawable.ic_nav_home);
 
-            text2.setText("Checkout");
+            text2.setText("New Sale");
             icon2.setImageResource(R.drawable.ic_nav_sales);
 
-            text3.setText("Stock");
-            icon3.setImageResource(R.drawable.ic_nav_inventory);
+            text3.setText("History");
+            icon3.setImageResource(android.R.drawable.ic_menu_recent_history);
 
             tab4.setVisibility(View.GONE);
             divider3.setVisibility(View.GONE);
 
-            tab1.setOnClickListener(v -> { loadFragment(new HomeFragment()); updateNavbarState(0); });
+            tab1.setOnClickListener(v -> { /* loadFragment(new CashierHomeFragment()); */ updateNavbarState(0); });
             tab2.setOnClickListener(v -> { loadFragment(new SalesFragment()); updateNavbarState(1); });
-            tab3.setOnClickListener(v -> { loadFragment(new InventoryFragment()); updateNavbarState(2); });
+            tab3.setOnClickListener(v -> { /* loadFragment(new CashierTransactionsFragment()); */ updateNavbarState(2); });
 
-            loadFragment(new HomeFragment());
-            updateNavbarState(0);
+            loadFragment(new SalesFragment());
+            updateNavbarState(1);
 
         } else {
-            // MANAGER MASTER DASHBOARD CONFIGURATION (All 4 Tabs)
             text1.setText("Home");
             icon1.setImageResource(R.drawable.ic_nav_home);
 
-            text2.setText("Sales");
+            text2.setText("Overview");
             icon2.setImageResource(R.drawable.ic_nav_sales);
 
-            text3.setText("Stock");
-            icon3.setImageResource(R.drawable.ic_nav_inventory);
+            text3.setText("Staff");
+            icon3.setImageResource(R.drawable.ic_nav_staff);
 
-            text4.setText("Staff");
-            icon4.setImageResource(R.drawable.ic_nav_staff);
+            text4.setText("Refunds");
+            icon4.setImageResource(android.R.drawable.ic_menu_revert);
 
-            tab1.setOnClickListener(v -> { loadFragment(new HomeFragment()); updateNavbarState(0); });
-            tab2.setOnClickListener(v -> { loadFragment(new SalesFragment()); updateNavbarState(1); });
-            tab3.setOnClickListener(v -> { loadFragment(new InventoryFragment()); updateNavbarState(2); });
-            tab4.setOnClickListener(v -> { loadFragment(new StaffFragment()); updateNavbarState(3); });
+            tab1.setOnClickListener(v -> { updateNavbarState(0); });
+            tab2.setOnClickListener(v -> { updateNavbarState(1); });
+            tab3.setOnClickListener(v -> { updateNavbarState(2); });
+            tab4.setOnClickListener(v -> { updateNavbarState(3); });
 
-            loadFragment(new HomeFragment());
             updateNavbarState(0);
         }
 
         buttonLogout.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, WelcomeActivity.class);
+            Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();

@@ -30,9 +30,7 @@ public class SalesSummaryService extends Service {
 
             // Safely execute the repository calculation query on background threads
             transactionRepository.getBusinessSalesTotal(businessId, startTime, endTime, total -> {
-                // Return execution context payload back to a system log or notification trigger
                 Log.d(TAG, "Background Calculation Complete. 24hr Sales Volume Total: TZS " + total);
-
                 // Stop the service automatically once the task is finished to preserve battery
                 stopSelf();
             });
@@ -40,12 +38,12 @@ public class SalesSummaryService extends Service {
             stopSelf();
         }
 
-        return START_NOT_STICKY; // Do not auto-restart if the OS kills it for memory
+        return START_NOT_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null; // We are using a Started Service, not a Bound Service
+        return null;
     }
 
     @Override
