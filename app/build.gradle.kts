@@ -37,11 +37,21 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.material)
 
+    val cameraxVersion = "1.4.0"
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")
 
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
+
+    // offline QR code generator
+    implementation("com.google.zxing:core:3.5.3")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)

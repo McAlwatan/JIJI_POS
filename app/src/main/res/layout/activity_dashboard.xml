@@ -1,147 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://android.com"
+    xmlns:tools="http://android.com"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_black"
     android:orientation="vertical"
-    android:background="@color/bg_dark"
-    android:padding="32dp">
+    android:padding="28dp"
+    tools:context=".DashboardActivity">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="24dp" />
-
-    <LinearLayout
+    <!-- Header Section Layout Banner -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="32dp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/imageProfilePlaceholder">
 
             <TextView
                 android:id="@+id/textWelcomeBanner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome, User!"
-                android:textSize="26sp"
+                android:text="Habari, User!"
                 android:textColor="@color/white"
+                android:textSize="28sp"
                 android:textStyle="bold" />
 
-            <androidx.cardview.widget.CardView
+            <TextView
+                android:id="@+id/textDashboardSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/card_dark"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/textRoleTag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="UNKNOWN"
-                    android:textColor="@color/teal_light"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="6dp" />
-            </androidx.cardview.widget.CardView>
-
+                android:text="Welcome to your central workspace"
+                android:textColor="@color/white"
+                android:alpha="0.7"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp"/>
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:cardCornerRadius="24dp"
+        <!-- Frosted Glass Role Status Badge Component -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/imageProfilePlaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            app:cardCornerRadius="10dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/teal_primary">
+            app:strokeWidth="1dp"
+            app:strokeColor="#40FFFFFF"
+            android:backgroundTint="#20FFFFFF">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="U"
+                android:id="@+id/textRoleTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UNKNOWN"
                 android:textColor="@color/white"
+                android:textSize="11sp"
                 android:textStyle="bold"
-                android:textSize="18sp"
-                android:gravity="center" />
-        </androidx.cardview.widget.CardView>
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp" />
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
 
-    </LinearLayout>
+    <!-- Content Workspace Section Area Title Label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AVAILABLE ACTIONS"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:alpha="0.6"
+        android:letterSpacing="0.1"
+        android:layout_marginBottom="16dp"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="28dp" />
-
-    <androidx.cardview.widget.CardView
+    <!-- Central Interactive Display Panel Base Box Frame -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:cardCornerRadius="24dp"
+        app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="@color/card_dark">
+        app:strokeWidth="1dp"
+        app:strokeColor="#30FFFFFF"
+        android:backgroundTint="#15FFFFFF">
 
-        <LinearLayout
+        <!-- FIXED FRAME LAYOUT CONTAINER PLUGGED IN NATIVELY HERE -->
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="24dp">
+            android:layout_height="match_parent" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/input_bg"
-                android:layout_marginBottom="20dp">
-
-                <ProgressBar
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center"
-                    android:indeterminateTint="@color/teal_light" />
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/textDashboardStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Loading Module Workspace..."
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:gravity="center" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hang tight, this only takes a moment"
-                android:textColor="@color/text_muted"
-                android:textSize="13sp"
-                android:gravity="center"
-                android:layout_marginTop="6dp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="24dp" />
+        android:layout_height="16dp"
+        android:orientation="vertical" />
 
-    <com.google.android.material.button.MaterialButton
+    <!-- Action Log Out Button Blueprint Element -->
+    <Button
         android:id="@+id/buttonLogout"
         android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:backgroundTint="@color/card_dark"
-        android:text="LOG OUT"
-        android:textColor="@color/white"
-        android:textSize="15sp"
+        android:layout_height="63dp"
+        android:backgroundTint="@color/white"
+        android:text="LOG OUT SYSTEM"
+        android:textColor="@color/black"
+        android:textSize="16sp"
         android:textStyle="bold"
-        app:cornerRadius="16dp"
-        app:strokeColor="@color/divider"
-        app:strokeWidth="1dp" />
+        app:cornerRadius="13dp" />
+
+    <!-- CUSTOM ARTIFACT BOTTOM CUSTOM VIEW NAVIGATION CONTAINER BAR -->
+    <!-- UNIVERSAL ADAPTIVE BOTTOM NAVIGATION CONTAINER BAR -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@drawable/bg_navbar"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="8dp"
+        android:layout_marginTop="16dp">
+
+        <!-- SLOT 1 -->
+        <LinearLayout
+            android:id="@+id/tab1"
+            android:layout_width="0dp"
+            android:layout_weight="1.3"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_nav_active_pill"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingHorizontal="10dp">
+            <ImageView
+                android:id="@+id/icon1"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_nav_home"
+                app:tint="@color/white" />
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:layout_marginStart="6dp" />
+        </LinearLayout>
+
+        <View android:id="@+id/divider1" android:layout_width="1dp" android:layout_height="24dp" android:background="#15FFFFFF" />
+
+        <!-- SLOT 2 -->
+        <LinearLayout
+            android:id="@+id/tab2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView
+                android:id="@+id/icon2"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_nav_sales"
+                app:tint="#88FFFFFF" />
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Action2"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:layout_marginStart="6dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <View android:id="@+id/divider2" android:layout_width="1dp" android:layout_height="24dp" android:background="#15FFFFFF" />
+
+        <!-- SLOT 3 -->
+        <LinearLayout
+            android:id="@+id/tab3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView
+                android:id="@+id/icon3"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_nav_inventory"
+                app:tint="#88FFFFFF" />
+            <TextView
+                android:id="@+id/text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Action3"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:layout_marginStart="6dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <View android:id="@+id/divider3" android:layout_width="1dp" android:layout_height="24dp" android:background="#15FFFFFF" />
+
+        <!-- SLOT 4 -->
+        <LinearLayout
+            android:id="@+id/tab4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:clickable="true"
+            android:focusable="true">
+            <ImageView
+                android:id="@+id/icon4"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_nav_staff"
+                app:tint="#88FFFFFF" />
+            <TextView
+                android:id="@+id/text4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Action4"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:layout_marginStart="6dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

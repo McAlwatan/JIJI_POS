@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JIJIPOS">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -24,26 +27,27 @@
         <activity
             android:name=".WelcomeActivity"
             android:exported="false"
-            >
+            />
 
-        </activity>
         <activity
             android:name=".LoginActivity"
             android:exported="false"
-            >
+            />
 
-        </activity>
         <activity
             android:name=".RegisterActivity"
-            android:exported="false">
+            android:exported="false"
+            />
 
-        </activity>
         <activity
             android:name=".DashboardActivity"
             android:exported="false"
-            >
+            />
 
-        </activity>
+        <service
+            android:name=".SalesSummaryService"
+            android:exported="false"
+            />
     </application>
 
 </manifest>

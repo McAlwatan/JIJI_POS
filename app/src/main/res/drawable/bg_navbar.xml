@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Sleek deep charcoal/black backplate color matching your design theme -->
+    <solid android:color="#121212" />
+    <!-- Smoothly rounded outer pill edges -->
+    <corners android:radius="24dp" />
+</shape>

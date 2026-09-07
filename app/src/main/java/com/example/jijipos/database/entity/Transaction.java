@@ -26,7 +26,7 @@ public class Transaction {
     private long timestamp;
     private boolean isRefunded;
 
-    public Transaction(long businessId, long customerId, long cashierId, double totalAmount, String category, long timestamp, boolean isRefunded){
+    public Transaction(long businessId, Long customerId, Long cashierId, double totalAmount, String category, long timestamp, boolean isRefunded){
         this.businessId = businessId;
         this.cashierId = cashierId;
         this.customerId = customerId;

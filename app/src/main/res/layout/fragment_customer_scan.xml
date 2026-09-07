@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://android.com"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 1. FULL-SCREEN LIVE CAMERA FEED PREVIEW RUNTIME VIEWPORT -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/cameraPreviewView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_bottom_toTopOf="@id/cardScanResultPanel" />
+
+    <!-- Overlaid Success Status Feedback Header Panel -->
+    <LinearLayout
+        android:id="@+id/layoutScanSuccessHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#A0000000">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your scan was successful !"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your e-receipt order record has been successfully initiated."
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:alpha="0.8"
+            android:gravity="center"
+            android:layout_marginTop="6dp" />
+    </LinearLayout>
+
+    <!-- 2. SCAN RESULT DETAILS OVERLAY CONTAINER LOWER PANEL -->
+    <!-- 2. SCAN RESULT DETAILS OVERLAY CONTAINER LOWER PANEL -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardScanResultPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        android:backgroundTint="#121212"
+        app:strokeWidth="1dp"
+        app:strokeColor="#25FFFFFF"
+        android:layout_margin="16dp"
+        app:layout_bottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Universal Hint Label (Always Visible to Guide the User) -->
+            <TextView
+                android:id="@+id/textScanResultHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Position the camera well over the code"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:gravity="center" />
+
+            <!-- DYNAMIC TARGET GROUP: Completely hidden out of sight while scanning -->
+            <LinearLayout
+                android:id="@+id/layoutScanActionsGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Result"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:alpha="0.5"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Real-Time Decoded Receipt Payload String Output Area -->
+                <TextView
+                    android:id="@+id/textScanResultData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Data String"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- Action Control Buttons Array Footer Frame Layout -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonScanAgain"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="Scan Again"
+                        android:textColor="@color/black"
+                        android:backgroundTint="@color/white"
+                        android:textStyle="bold"
+                        app:cornerRadius="13dp"
+                        android:layout_marginEnd="8dp"/>
+
+                    <Button
+                        android:id="@+id/buttonScanContinue"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.2"
+                        android:layout_height="match_parent"
+                        android:text="Continue"
+                        android:textColor="@color/white"
+                        android:backgroundTint="#427BFF"
+                        android:textStyle="bold"
+                        app:cornerRadius="13dp"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
