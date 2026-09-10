@@ -23,4 +23,6 @@
     <string name="signUp">Sign Up</string>
     <string name="back">back</string>
     <string name="alreadyHaveAccount">Already have an account?</string>
+    <string name="noReceiptDescription">No scanned receipts found.\nGo to Scan QR to save your first invoice!</string>
+    <string name="myReceipts">My Receipts</string>
 </resources>

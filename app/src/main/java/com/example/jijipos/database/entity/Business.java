@@ -14,6 +14,8 @@ public class Business {
     private long createdAt;
 
 
+    public Business() {}
+
     public Business(String businessName, String location, String phoneNumber, long createdAt){
         this.businessName = businessName;
         this.location = location;
@@ -24,8 +26,12 @@ public class Business {
     public long getId() { return id; }
     public void setId(long id) { this.id = id;}
     public String getBusinessName() { return businessName; }
+    public void setBusinessName(String businessName) {this.businessName = businessName; }
     public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
     public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber; }
 
     public long getCreatedAt() { return createdAt; }
+    public void setCreatedAt(long createdAt) { this.createdAt = createdAt; }
 }

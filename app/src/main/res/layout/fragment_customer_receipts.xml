@@ -1,150 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://android.com"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp">
-
+    android:background="#141414"
+    android:paddingTop="16dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Expenditure Analytics"
+        android:text="@string/myReceipts"
         android:textColor="@color/white"
-        android:textSize="22sp"
+        android:textSize="24sp"
         android:textStyle="bold"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp" />
 
-    <!-- ANALYTICS CARDS GRID BLOCK OVERVIEW -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="24dp">
-
-        <!-- 30-Day Total Spending Card Box -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="100dp"
-            app:cardCornerRadius="13dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="#15FFFFFF"
-            android:backgroundTint="#10FFFFFF"
-            android:layout_marginEnd="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Past 30 Days"
-                    android:textColor="@color/white"
-                    android:alpha="0.6"
-                    android:textSize="12sp" />
-                <TextView
-                    android:id="@+id/textMonthlySpendTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TZS 0"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Annual 365-Day Total Spending Card Box -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="100dp"
-            app:cardCornerRadius="13dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="#15FFFFFF"
-            android:backgroundTint="#10FFFFFF"
-            android:layout_marginStart="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Annual Total"
-                    android:textColor="@color/white"
-                    android:alpha="0.6"
-                    android:textSize="12sp" />
-                <TextView
-                    android:id="@+id/textAnnualSpendTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TZS 0"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
-
     <TextView
+        android:id="@+id/textNoReceiptsHint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="RECENT TIMELINE HISTORY"
+        android:text="@string/noReceiptDescription"
         android:textColor="@color/white"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        android:alpha="0.5"
-        android:letterSpacing="0.1"
-        android:layout_marginBottom="12dp"/>
+        android:alpha="0.6"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:layout_marginTop="80dp"
+        android:visibility="gone" />
 
-    <!-- Scrollable Transaction History Feed View -->
-
-    <LinearLayout xmlns:android="http://android.com"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewReceipts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="16dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="My Receipts"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Fallback hint label showing up only if database logs are empty -->
-        <TextView
-            android:id="@+id/textNoReceiptsHint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="No scanned receipts found.\nGo to Scan QR to save your first invoice!"
-            android:textColor="@color/white"
-            android:alpha="0.6"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:layout_marginTop="60dp"
-            android:visibility="gone" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewReceipts"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
-    </LinearLayout>
+        android:scrollbars="vertical" />
 
 </LinearLayout>

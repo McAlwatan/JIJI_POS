@@ -29,6 +29,8 @@ public class User {
     private String role;
     private Long businessId;
 
+    public User() {}
+
 
     public User(String fullName, String phoneNumber, String passwordHash, String role, Long businessId){
         this.fullName = fullName;
@@ -42,8 +44,13 @@ public class User {
     public void setId(long id) { this.id = id; }
 
     public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
     public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
     public String getPasswordHash() { return passwordHash; }
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
     public String getRole() { return role; }
+    public void setRole(String role) { this.role = role;}
     public Long getBusinessId() { return businessId; }
+    public void setBusinessId(Long businessId) { this.businessId = businessId; }
 }

@@ -26,7 +26,9 @@ public class Transaction {
     private long timestamp;
     private boolean isRefunded;
 
-    public Transaction(long businessId, Long customerId, Long cashierId, double totalAmount, String category, long timestamp, boolean isRefunded){
+    public Transaction() {}
+
+    public Transaction(long businessId, long customerId, long cashierId, double totalAmount, String category, long timestamp, boolean isRefunded){
         this.businessId = businessId;
         this.cashierId = cashierId;
         this.customerId = customerId;
@@ -40,12 +42,19 @@ public class Transaction {
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
     public long getBusinessId() { return businessId; }
+    public void setBusinessId(long businessId) { this.businessId = businessId; }
     public long getCustomerId() { return customerId; }
+    public void setCustomerId(long customerId) { this.customerId = customerId; }
     public long getCashierId() { return cashierId; }
+    public void setCashierId(long cashierId) { this.cashierId = cashierId; }
     public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
     public double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+
     public long getTimestamp() { return timestamp; }
+    public void setTimestamp(long timestamp) { this.timestamp = timestamp; }
     public boolean isRefunded() { return isRefunded; }
     public void setRefunded(boolean refunded) { isRefunded = refunded; }
 

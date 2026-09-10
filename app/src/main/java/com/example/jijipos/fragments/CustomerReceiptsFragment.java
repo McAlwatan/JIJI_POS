@@ -46,7 +46,7 @@ public class CustomerReceiptsFragment extends Fragment {
             AppDatabase db = AppDatabase.getInstance(getContext());
 
             // Query the transaction table for all records matching this specific customer ID
-            final List<Transaction> savedReceipts = db.transactionDao().getAllTransactionsForBusiness(1L);
+            final List savedReceipts = db.transactionDao().getReceiptHistoryByCustomer(99L);
             // Note: In Month 2, we will add an explicit query filter inside TransactionDao targeting customerId directly!
 
             if (getActivity() != null) {

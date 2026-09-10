@@ -12,8 +12,8 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        Button btnSplashLogin = findViewById(R.id.splashLoginBtn);
-        Button btnSplashRegister = findViewById(R.id.splashRegisterBtn);
+        Button btnSplashLogin = findViewById(R.id.btnSplashLogin);
+        Button btnSplashRegister = findViewById(R.id.btnSplashRegister);
 
         btnSplashLogin.setOnClickListener(v -> {
             Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);

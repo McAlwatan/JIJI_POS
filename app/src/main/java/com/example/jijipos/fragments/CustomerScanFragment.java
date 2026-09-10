@@ -218,24 +218,32 @@ public class CustomerScanFragment extends Fragment {
                     });
 
                     btnSave.setOnClickListener(v -> {
-                        // Create structural transaction record linked to Customer session storage tracking
-                        // (Using mock business/cashier context IDs for local validation tracking layers)
+                        // Create the structural receipt record explicitly linked to your Customer tracking slot
+                        // Setting customerId to 99L to match your dashboard tracking filters perfectly
                         com.example.jijipos.database.entity.Transaction newReceiptRecord = new com.example.jijipos.database.entity.Transaction(
-                                1L, 1L, 99L, numericalPrice, "Shopping", timestamp, false
+                                1L, 1L, 99L, numericalPrice, itemName, timestamp, false
                         );
 
-                        // Safely commit history payload records off the main thread runner pipeline
+                        // Initialize repository subsystem context mapping to execute database write
                         com.example.jijipos.repository.TransactionRepository repo = new com.example.jijipos.repository.TransactionRepository(requireContext());
+
                         repo.insertTransaction(newReceiptRecord, newId -> {
                             if (getActivity() != null) {
                                 getActivity().runOnUiThread(() -> {
                                     Toast.makeText(getContext(), "Receipt saved to history logs!", Toast.LENGTH_SHORT).show();
+
+                                    // FIX: Simply dismiss the dialog window layout frames and resume scanner
+                                    // DO NOT trigger any clear-task welcome intents here!
                                     dialog.dismiss();
                                     resetScannerState();
+
+                                    // Execute your background storage ceiling optimization safely
+                                    executeBackgroundStorageMaintenance();
                                 });
                             }
                         });
                     });
+
 
                     dialog.show();
 

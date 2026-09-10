@@ -1,264 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://android.com"
+    xmlns:tools="http://android.com"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_dark"
+    android:background="#111111"
     android:orientation="vertical"
-    android:padding="28dp"
     tools:context=".DashboardActivity">
 
-    <RelativeLayout
+    <!-- UPPER DARK BALANCE TRACKER CARD BLOCK -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="32dp">
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:background="#161616">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/imageProfilePlaceholder"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="12dp">
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:id="@+id/textWelcomeBanner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Habari, User!"
+                android:text="Money"
                 android:textColor="@color/white"
-                android:textSize="26sp"
-                android:textStyle="bold" />
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_centerVertical="true" />
 
-            <TextView
-                android:id="@+id/textDashboardSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Welcome to your central workspace"
-                android:textColor="@color/text_muted"
-                android:textSize="13sp"
-                android:layout_marginTop="2dp"/>
-        </LinearLayout>
+            <!-- ADDED THE FUNCTIONAL ID TAG NATIVELY HERE -->
+            <ImageView
+                android:id="@+id/btnHeaderMenu"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_sort_by_size"
+                app:tint="@color/white"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:focusable="true" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/imageProfilePlaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="@color/red_light"
-            app:cardBackgroundColor="@color/card_dark">
+        </RelativeLayout>
 
+
+        <!-- Dynamic Casing Selector Pill Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="@drawable/bg_navbar"
+            android:backgroundTint="#222222"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center_vertical">
             <TextView
                 android:id="@+id/textRoleTag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="UNKNOWN"
-                android:textColor="@color/red_light"
-                android:textSize="11sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_nav_active_pill"
+                android:backgroundTint="#CCE3DE"
+                android:text="MANAGER"
+                android:textColor="#111111"
                 android:textStyle="bold"
-                android:letterSpacing="0.05"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="8dp" />
-        </com.google.android.material.card.MaterialCardView>
-    </RelativeLayout>
+                android:textSize="12sp"
+                android:gravity="center" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_help"
+                app:tint="#40FFFFFF"
+                android:layout_marginHorizontal="12dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="Account Summary"
+                android:textColor="@color/white"
+                android:alpha="0.5"
+                android:textSize="12sp"
+                android:gravity="center" />
+        </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="AVAILABLE ACTIONS"
-        android:textColor="@color/text_muted"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.1"
-        android:layout_marginBottom="16dp"/>
+        <!-- Cumulative System Metrics Counter Monitoring Labels -->
+        <TextView
+            android:id="@+id/textLiveBalanceValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1,400.00 TZS"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="40dp" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Active Shift Sales Volume"
+            android:textColor="@color/white"
+            android:alpha="0.5"
+            android:textSize="13sp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="24dp" />
+    </LinearLayout>
+
+    <!-- LOWER CENTRAL INTERACTIVE MODULE TRAY -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadiusTopStart="32dp"
+        app:cardCornerRadiusTopEnd="32dp"
+        app:cardCornerRadiusBottomStart="0dp"
+        app:cardCornerRadiusBottomEnd="0dp"
         app:cardElevation="0dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/divider"
-        app:cardBackgroundColor="@color/card_dark">
+        app:strokeWidth="0dp"
+        android:backgroundTint="@color/white">
 
+        <!-- FrameLayout container where the swappable fragments load -->
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp" />
 
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:orientation="vertical" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonLogout"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:backgroundTint="@color/card_dark"
-        android:text="LOG OUT SYSTEM"
-        android:textColor="@color/red_light"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.03"
-        app:cornerRadius="16dp"
-        app:strokeColor="@color/red"
-        app:strokeWidth="1.5dp"
-        app:icon="@drawable/ic_logout"
-        app:iconTint="@color/red_light"
-        app:iconGravity="textStart" />
-
-    <!-- Bottom navigation -->
+    <!-- ADAPTIVE SYSTEM COMPONENT NAVIGATION BAR FOOTER (STAYS DEEP CHARCOAL) -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:background="@drawable/bg_navbar"
+        android:layout_height="68dp"
+        android:background="#161616"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="8dp"
-        android:layout_marginTop="16dp">
+        android:gravity="center_vertical">
 
-        <LinearLayout
-            android:id="@+id/tab1"
-            android:layout_width="0dp"
-            android:layout_weight="1.3"
-            android:layout_height="56dp"
-            android:background="@drawable/bg_nav_active_pill"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:clickable="true"
-            android:focusable="true">
-            <ImageView
-                android:id="@+id/icon1"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_nav_home"
-                app:tint="@color/red_light" />
-            <TextView
-                android:id="@+id/text1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:textColor="@color/red_light"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:layout_marginStart="6dp" />
+        <LinearLayout android:id="@+id/tab1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
+            <ImageView android:id="@+id/icon1" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_home" app:tint="#88FFFFFF"/>
+            <TextView android:id="@+id/text1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp"/>
         </LinearLayout>
 
-        <View
-            android:id="@+id/divider1"
-            android:layout_width="1dp"
-            android:layout_height="24dp"
-            android:background="@color/divider" />
-
-        <LinearLayout
-            android:id="@+id/tab2"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="56dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:clickable="true"
-            android:focusable="true">
-            <ImageView
-                android:id="@+id/icon2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_nav_sales"
-                app:tint="@color/text_muted" />
-            <TextView
-                android:id="@+id/text2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Action2"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:layout_marginStart="6dp"
-                android:visibility="gone" />
+        <LinearLayout android:id="@+id/tab2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
+            <ImageView android:id="@+id/icon2" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_sales" app:tint="#88FFFFFF"/>
+            <TextView android:id="@+id/text2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sales" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp" android:visibility="visible"/>
         </LinearLayout>
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="1dp"
-            android:layout_height="24dp"
-            android:background="@color/divider" />
-
-        <LinearLayout
-            android:id="@+id/tab3"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="56dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:clickable="true"
-            android:focusable="true">
-            <ImageView
-                android:id="@+id/icon3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_nav_inventory"
-                app:tint="@color/text_muted" />
-            <TextView
-                android:id="@+id/text3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Action3"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:layout_marginStart="6dp"
-                android:visibility="gone" />
+        <LinearLayout android:id="@+id/tab3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
+            <ImageView android:id="@+id/icon3" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_staff" app:tint="#88FFFFFF"/>
+            <TextView android:id="@+id/text3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Staff" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp" android:visibility="visible"/>
         </LinearLayout>
 
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="1dp"
-            android:layout_height="24dp"
-            android:background="@color/divider" />
-
-        <LinearLayout
-            android:id="@+id/tab4"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="56dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:clickable="true"
-            android:focusable="true">
-            <ImageView
-                android:id="@+id/icon4"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_nav_staff"
-                app:tint="@color/text_muted" />
-            <TextView
-                android:id="@+id/text4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Action4"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:layout_marginStart="6dp"
-                android:visibility="gone" />
+        <LinearLayout android:id="@+id/tab4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
+            <ImageView android:id="@+id/icon4" android:layout_width="22dp" android:layout_height="22dp" android:src="@android:drawable/ic_menu_close_clear_cancel" app:tint="#88FFFFFF"/>
+            <TextView android:id="@+id/text4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Exit" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp"/>
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>

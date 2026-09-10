@@ -13,4 +13,9 @@
     <color name="divider">#333333</color>
     <color name="redish">#AD0006</color>
     <color name="red_light">#FF6B6B</color>
+    <color name="surface_elevated">#221F21</color>
+    <color name="accent_orange">#FF7A45</color>
+    <color name="teal_soft">#331F8A6E</color>
+    <color name="orange_soft">#33FF7A45</color>
+    <color name="nav_inactive">#7A7A7C</color>
 </resources>

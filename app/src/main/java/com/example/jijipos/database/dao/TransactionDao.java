@@ -31,4 +31,7 @@ public interface TransactionDao {
 
     @Query("DELETE FROM transactions WHERE timestamp < :cutoffTimestamp")
     int pruneOldLocalHistory(long cutoffTimestamp);
+
+    @Query("SELECT * FROM transactions WHERE customerId = :customerId ORDER BY timestamp DESC")
+    List<Transaction> getReceiptHistoryByCustomer(long customerId);
 }
