@@ -105,7 +105,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    // Handles Invitation Verification checks for Restricted Cashier accounts
     private void handleCashierVerificationAndSignUp(String name, String phone, String encryptedPassword) {
         String typedTokenCode = inputInvitationCode.getText().toString().trim();
 
@@ -114,31 +113,23 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Run validation against token keys database mapping inside independent worker thread lanes safely
-        // Run validation against token keys database mapping inside independent worker thread lanes safely
         java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase db = AppDatabase.getInstance(this);
-            Long associatedBusinessIdObj = db.userDao().verifyManagerInvitationToken(typedTokenCode);
 
-            // =============================================================
-            // DEVELOPMENT MOCK BYPASS (ENFORCES STABLE ISOLATED TESTING)
-            // =============================================================
-            if (associatedBusinessIdObj == null && typedTokenCode.equals("0810101010")) {
-                // If code is not found in database yet, automatically assign it to business 1L for testing
-                associatedBusinessIdObj = 1L;
-            }
-            // =============================================================
+            // 1. Fetch the actual Manager profile matching the invitation phone code token
+            User managerProfile = db.userDao().getManagerProfileByPhone(typedTokenCode);
 
-            if (associatedBusinessIdObj == null) {
+            if (managerProfile == null) {
+                // If no Manager exists with that phone number, reject registration safely without crashing
                 runOnUiThread(() -> {
-                    inputInvitationCode.setError("Invalid or expired Manager Invitation Code!");
+                    inputInvitationCode.setError("Invalid or inactive Manager Invitation Code! Please check the number.");
                 });
             } else {
-                long associatedBusinessId = associatedBusinessIdObj;
+                // 2. Extract the manager's valid business relationship context ID safely
+                long associatedBusinessId = managerProfile.getBusinessId();
 
-                // Instantiate customized corporate worker user instance explicitly linked to verified store reference index
+                // 3. Create and persist the verified Cashier sub_account linked directly to the store context
                 User approvedCashier = new User(name, phone, encryptedPassword, "CASHIER", associatedBusinessId);
-
                 db.userDao().insertUser(approvedCashier);
 
                 runOnUiThread(() -> {
@@ -149,18 +140,30 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    // Handles standard registration loops for default open roles (Customers/Managers)
     private void handleStandardUserSignUp(String name, String phone, String encryptedPassword, String selectedRole) {
-        User newUser = new User(name, phone, encryptedPassword, selectedRole, null);
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            AppDatabase db = AppDatabase.getInstance(this);
+            long targetedBusinessId = 0L;
 
-        userRepository.insertUser(newUser, newId -> {
+            if (selectedRole.equalsIgnoreCase("MANAGER")) {
+                com.example.jijipos.database.entity.Business newEnterprise = new com.example.jijipos.database.entity.Business(
+                        name + " Retail Outlet Store", "Dar es Salaam, TZ", phone, System.currentTimeMillis()
+                );
+                targetedBusinessId = db.businessDao().insertBusiness(newEnterprise);
+            }
+
+            User newUser;
+            if (selectedRole.equalsIgnoreCase("MANAGER")) {
+                newUser = new User(name, phone, encryptedPassword, selectedRole, targetedBusinessId);
+            } else {
+                newUser = new User(name, phone, encryptedPassword, selectedRole, null);
+            }
+
+            db.userDao().insertUser(newUser);
+
             runOnUiThread(() -> {
-                if (newId > 0) {
-                    Toast.makeText(RegisterActivity.this, "Account created successfully! Please Sign In.", Toast.LENGTH_LONG).show();
-                    finish();
-                } else {
-                    Toast.makeText(RegisterActivity.this, "Registration failed, please try again.", Toast.LENGTH_LONG).show();
-                }
+                Toast.makeText(RegisterActivity.this, "Account created successfully! Please Sign In.", Toast.LENGTH_LONG).show();
+                finish();
             });
         });
     }

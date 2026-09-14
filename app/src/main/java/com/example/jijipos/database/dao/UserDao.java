@@ -29,4 +29,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE role = 'CASHIER' AND businessId = (SELECT businessId FROM users WHERE phoneNumber = :managerPhone AND role = 'MANAGER' LIMIT 1)")
     List<User> getCashiersForManager(String managerPhone);
+
+    @Query("SELECT * FROM users WHERE phoneNumber = :managerPhone AND role = 'MANAGER' LIMIT 1")
+    User getManagerProfileByPhone(String managerPhone);
 }

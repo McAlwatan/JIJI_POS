@@ -23,7 +23,6 @@ public class CustomerReceiptsFragment extends Fragment {
 
     private RecyclerView recyclerViewReceipts;
     private TextView textNoReceiptsHint;
-    private long activeCustomerId = 99L; // Using our matching mock Customer ID from the scanner step
 
     @Nullable
     @Override
@@ -31,11 +30,10 @@ public class CustomerReceiptsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_customer_receipts, container, false);
 
         recyclerViewReceipts = view.findViewById(R.id.recyclerViewReceipts);
-        textNoReceiptsHint = view.findViewById(R.id.textNoReceiptsHint); // We will add this small fallback to the XML
+        textNoReceiptsHint = view.findViewById(R.id.textNoReceiptsHint);
 
         recyclerViewReceipts.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Call the live background database extraction routine
         loadLiveReceiptHistory();
         return view;
     }
@@ -45,9 +43,8 @@ public class CustomerReceiptsFragment extends Fragment {
         Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase db = AppDatabase.getInstance(getContext());
 
-            // Query the transaction table for all records matching this specific customer ID
-            final List savedReceipts = db.transactionDao().getReceiptHistoryByCustomer(99L);
-            // Note: In Month 2, we will add an explicit query filter inside TransactionDao targeting customerId directly!
+            // FIXED: Added the explicit generic data class type <Transaction> right here
+            final List<Transaction> savedReceipts = db.transactionDao().getReceiptHistoryByCustomer(99L);
 
             if (getActivity() != null) {
                 // Bounce back onto the main UI thread to update your display widgets safely
