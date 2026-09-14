@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 1. FULL-SCREEN LIVE CAMERA FEED PREVIEW RUNTIME VIEWPORT -->
     <androidx.camera.view.PreviewView
         android:id="@+id/cameraPreviewView"
         android:layout_width="match_parent"
@@ -12,7 +11,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_bottom_toTopOf="@id/cardScanResultPanel" />
 
-    <!-- Overlaid Success Status Feedback Header Panel -->
     <LinearLayout
         android:id="@+id/layoutScanSuccessHeader"
         android:layout_width="match_parent"
@@ -43,8 +41,6 @@
             android:layout_marginTop="6dp" />
     </LinearLayout>
 
-    <!-- 2. SCAN RESULT DETAILS OVERLAY CONTAINER LOWER PANEL -->
-    <!-- 2. SCAN RESULT DETAILS OVERLAY CONTAINER LOWER PANEL -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardScanResultPanel"
         android:layout_width="match_parent"
@@ -63,7 +59,6 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Universal Hint Label (Always Visible to Guide the User) -->
             <TextView
                 android:id="@+id/textScanResultHint"
                 android:layout_width="match_parent"
@@ -73,7 +68,6 @@
                 android:textSize="15sp"
                 android:gravity="center" />
 
-            <!-- DYNAMIC TARGET GROUP: Completely hidden out of sight while scanning -->
             <LinearLayout
                 android:id="@+id/layoutScanActionsGroup"
                 android:layout_width="match_parent"
@@ -92,7 +86,6 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"/>
 
-                <!-- Real-Time Decoded Receipt Payload String Output Area -->
                 <TextView
                     android:id="@+id/textScanResultData"
                     android:layout_width="match_parent"
@@ -103,7 +96,6 @@
                     android:gravity="center"
                     android:layout_marginBottom="20dp" />
 
-                <!-- Action Control Buttons Array Footer Frame Layout -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="56dp"

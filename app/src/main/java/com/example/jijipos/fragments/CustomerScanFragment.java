@@ -218,31 +218,42 @@ public class CustomerScanFragment extends Fragment {
                     });
 
                     btnSave.setOnClickListener(v -> {
-                        // Create the structural receipt record explicitly linked to your Customer tracking slot
-                        // Setting customerId to 99L to match your dashboard tracking filters perfectly
-                        com.example.jijipos.database.entity.Transaction newReceiptRecord = new com.example.jijipos.database.entity.Transaction(
-                                1L, 1L, 99L, numericalPrice, itemName, timestamp, false
-                        );
+                        // 1. Offload the database persist logic directly to a clean single background worker thread
+                        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+                            try {
+                                com.example.jijipos.database.AppDatabase db = com.example.jijipos.database.AppDatabase.getInstance(requireContext());
 
-                        // Initialize repository subsystem context mapping to execute database write
-                        com.example.jijipos.repository.TransactionRepository repo = new com.example.jijipos.repository.TransactionRepository(requireContext());
+                                // Build the record matching Room requirements (Business ID: 1L, Cashier ID: 1L, Active Customer Session: 99L)
+                                com.example.jijipos.database.entity.Transaction localReceipt = new com.example.jijipos.database.entity.Transaction(
+                                        1L, 1L, 99L, numericalPrice, itemName, timestamp, false
+                                );
 
-                        repo.insertTransaction(newReceiptRecord, newId -> {
-                            if (getActivity() != null) {
-                                getActivity().runOnUiThread(() -> {
-                                    Toast.makeText(getContext(), "Receipt saved to history logs!", Toast.LENGTH_SHORT).show();
+                                // Execute the raw database save operation directly via your compiled TransactionDao
+                                db.transactionDao().insertTransaction(localReceipt);
 
-                                    // FIX: Simply dismiss the dialog window layout frames and resume scanner
-                                    // DO NOT trigger any clear-task welcome intents here!
-                                    dialog.dismiss();
-                                    resetScannerState();
+                                // 2. Bounce back cleanly onto the main thread window to refresh your visual layouts
+                                if (getActivity() != null) {
+                                    getActivity().runOnUiThread(() -> {
+                                        Toast.makeText(getContext(), "Receipt successfully pinned to local history ledger!", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                        resetScannerState(); // Re-activate live CameraX frame streaming engine loops
 
-                                    // Execute your background storage ceiling optimization safely
-                                    executeBackgroundStorageMaintenance();
-                                });
+                                        // Optimize device room constraints safety ceiling levels
+                                        executeBackgroundStorageMaintenance();
+                                    });
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                if (getActivity() != null) {
+                                    getActivity().runOnUiThread(() -> {
+                                        Toast.makeText(getContext(), "Database persist thread error!", Toast.LENGTH_SHORT).show();
+                                    });
+                                }
                             }
                         });
                     });
+
 
 
                     dialog.show();

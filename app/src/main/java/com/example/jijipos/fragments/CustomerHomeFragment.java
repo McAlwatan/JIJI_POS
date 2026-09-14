@@ -19,7 +19,6 @@ public class CustomerHomeFragment extends Fragment {
     private TextView chipToday, chipWeek, chipMonth, chipYear;
     private TextView textSpendAmount, textSpendLabel;
 
-    // Graph components tracking layout pointers
     private MaterialCardView cardGraphContainer;
     private LineGraphView customerSpendingGraph;
     private boolean isGraphPanelVisible = false;
@@ -31,12 +30,11 @@ public class CustomerHomeFragment extends Fragment {
             {"TSh 2,150,000", "Spent this year"}
     };
 
-    // Array data clusters mapping custom trend waves matching each lookup window interval
     private static final float[][] SHIFT_TREND_MATRICES = {
-            {300000f, 450000f, 1200000f, 850000f, 500000f, 950000f, 1400000f}, // Today Spline Data
-            {400000f, 850000f, 600000f, 1300000f, 950000f, 450000f, 1600000f}, // Week Spline Data
-            {800000f, 1200000f, 950000f, 1500000f, 700000f, 1100000f, 1950000f}, // Month Spline Data
-            {200000f, 600000f, 1400000f, 900000f, 1100000f, 1500000f, 1850000f}  // Year Spline Data
+            {300000f, 450000f, 1200000f, 850000f, 500000f, 950000f, 1400000f},
+            {400000f, 850000f, 600000f, 1300000f, 950000f, 450000f, 1600000f},
+            {800000f, 1200000f, 950000f, 1500000f, 700000f, 1100000f, 1950000f},
+            {200000f, 600000f, 1400000f, 900000f, 1100000f, 1500000f, 1850000f}
     };
 
     @Nullable
@@ -45,7 +43,6 @@ public class CustomerHomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_customer_home, container, false);
 
-        // Bind core form layout references
         chipToday = view.findViewById(R.id.chipToday);
         chipWeek = view.findViewById(R.id.chipWeek);
         chipMonth = view.findViewById(R.id.chipMonth);
@@ -53,41 +50,35 @@ public class CustomerHomeFragment extends Fragment {
         textSpendAmount = view.findViewById(R.id.textSpendAmount);
         textSpendLabel = view.findViewById(R.id.textSpendLabel);
 
-        // Bind interactive graphing components
         cardGraphContainer = view.findViewById(R.id.cardGraphContainer);
         customerSpendingGraph = view.findViewById(R.id.customerSpendingGraph);
 
-        // Map button clicks handling period selector changes
         chipToday.setOnClickListener(v -> selectPeriod(0));
         chipWeek.setOnClickListener(v -> selectPeriod(1));
         chipMonth.setOnClickListener(v -> selectPeriod(2));
         chipYear.setOnClickListener(v -> selectPeriod(3));
 
-        // Floating action transaction camera scanner route shortcut
         view.findViewById(R.id.btnScanQr).setOnClickListener(v -> {
             View tab2 = requireActivity().findViewById(R.id.tab2);
             if (tab2 != null) tab2.performClick();
         });
 
-        // Open my receipts recyclerview list history timeline route shortcut
         view.findViewById(R.id.actionMyReceipts).setOnClickListener(v -> {
             View tab3 = requireActivity().findViewById(R.id.tab3);
             if (tab3 != null) tab3.performClick();
         });
 
-        // Dynamically toggle the visibility of the Selcom style chart container on tile tap
         view.findViewById(R.id.actionSpendingGraph).setOnClickListener(v -> {
             isGraphPanelVisible = !isGraphPanelVisible;
             cardGraphContainer.setVisibility(isGraphPanelVisible ? View.VISIBLE : View.GONE);
 
-            // Re-adjust baseline anchoring elements layouts parameters dynamically to prevent overlapping
             View panelBg = view.findViewById(R.id.panelBackground);
             ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) panelBg.getLayoutParams();
             params.topToBottom = isGraphPanelVisible ? R.id.cardGraphContainer : R.id.textSpendLabel;
             panelBg.setLayoutParams(params);
         });
 
-        selectPeriod(0); // Run baseline initialization focus
+        selectPeriod(0);
         return view;
     }
 
@@ -102,7 +93,6 @@ public class CustomerHomeFragment extends Fragment {
         textSpendAmount.setText(PLACEHOLDER_TOTALS[index][0]);
         textSpendLabel.setText(PLACEHOLDER_TOTALS[index][1]);
 
-        // Push matching period arrays data directly into the View canvas custom drawing paint engine layer
         if (customerSpendingGraph != null) {
             customerSpendingGraph.setData(SHIFT_TREND_MATRICES[index]);
         }

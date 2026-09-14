@@ -1,6 +1,5 @@
 package com.example.jijipos;
 
-import android.app.AppComponentFactory;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,12 +17,11 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText inputPhone, inputPassword;
     private Button buttonLogin;
     private UserRepository userRepository;
-
     private TextView textSignUpLink;
 
     @Override
-    protected void onCreate(Bundle savedInstance){
-        super.onCreate(savedInstance);
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         userRepository = new UserRepository(this);
@@ -33,15 +31,14 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
         textSignUpLink = findViewById(R.id.textSignUpLink);
 
+        // Transition route directly to the Registration Activity view page context
         textSignUpLink.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
+            Intent secIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(secIntent);
         });
 
-
+        // Trigger user authentication logic on click
         buttonLogin.setOnClickListener(v -> handleUserAuthentication());
-
-
     }
 
     private void handleUserAuthentication(){
@@ -50,24 +47,25 @@ public class LoginActivity extends AppCompatActivity {
 
         if(TextUtils.isEmpty(phone)){
             inputPhone.setError("Phone number is required!");
+            return;
         }
         if(TextUtils.isEmpty(rawPassword)){
             inputPassword.setError("Password is required!");
+            return;
         }
-
 
         String encryptedInputPassword = SecurityUtils.hashPassword(rawPassword);
 
         userRepository.getUserByPhone(phone, user -> {
-
             runOnUiThread(() -> {
                 if(user == null){
                     Toast.makeText(LoginActivity.this, "User record profile not found!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 if(user.getPasswordHash().equals(encryptedInputPassword)){
-                    Toast.makeText(LoginActivity.this, "Welcome back" + user.getFullName(), Toast.LENGTH_LONG).show();
-                    routeUserToDashboard(user);
+                    Toast.makeText(LoginActivity.this, "Welcome back " + user.getFullName(), Toast.LENGTH_LONG).show();
+                    routeUserToDashboard(user); // Triggers our safe, robust navigator routing
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid credential mismatch", Toast.LENGTH_LONG).show();
                 }
@@ -81,8 +79,14 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
 
+        // =============================================================
+        // FIXED DATA CARRIER SUB-SYSTEM PASS-THROUGH ROUTINGS
+        // =============================================================
         intent.putExtra("USER_NAME", user.getFullName());
         intent.putExtra("USER_ROLE", role.trim().toUpperCase());
+        intent.putExtra("USER_PHONE", user.getPhoneNumber()); // Securely injected here with zero thread errors!
+        // =============================================================
+
         switch (role.toUpperCase().trim()) {
             case "CUSTOMER":
                 Toast.makeText(LoginActivity.this, "Routing to Customer space...", Toast.LENGTH_SHORT).show();
@@ -101,6 +105,4 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-
 }
