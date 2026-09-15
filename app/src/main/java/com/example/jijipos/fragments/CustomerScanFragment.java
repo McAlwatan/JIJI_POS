@@ -218,27 +218,60 @@ public class CustomerScanFragment extends Fragment {
                     });
 
                     btnSave.setOnClickListener(v -> {
-                        // 1. Offload the database persist logic directly to a clean single background worker thread
+                        // Force immediate user interface state feedback to prevent double-tap thread locks
+                        btnSave.setEnabled(false);
+
+                        // Offload the database persist logic directly to a clean single background worker thread lane
                         java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
                             try {
                                 com.example.jijipos.database.AppDatabase db = com.example.jijipos.database.AppDatabase.getInstance(requireContext());
 
-                                // Build the record matching Room requirements (Business ID: 1L, Cashier ID: 1L, Active Customer Session: 99L)
+                                com.example.jijipos.database.entity.Business testBusiness = db.businessDao().getBusinessById(1L);
+                                if (testBusiness == null) {
+                                    com.example.jijipos.database.entity.Business bootstrapBusiness = new com.example.jijipos.database.entity.Business(
+                                            "JIJI POS Retail Outlet", "Dar es Salaam, TZ", "00000000", System.currentTimeMillis()
+                                    );
+                                    bootstrapBusiness.setId(1L);
+                                    db.businessDao().insertBusiness(bootstrapBusiness);
+                                }
+
+                                // 2. Ensure test Cashier worker profile exists explicitly at ID 1
+                                com.example.jijipos.database.entity.User testCashier = db.userDao().getUserById(1L);
+                                if (testCashier == null) {
+                                    com.example.jijipos.database.entity.User bootstrapCashier = new com.example.jijipos.database.entity.User(
+                                            "Terminal Cashier 01", "0111111111", "mock_hash", "CASHIER", 1L
+                                    );
+                                    bootstrapCashier.setId(1L);
+                                    db.userDao().insertUser(bootstrapCashier);
+                                }
+
+                                // 3. Ensure test Customer profile exists explicitly at ID 99
+                                com.example.jijipos.database.entity.User testCustomer = db.userDao().getUserById(99L);
+                                if (testCustomer == null) {
+                                    com.example.jijipos.database.entity.User bootstrapCustomer = new com.example.jijipos.database.entity.User(
+                                            "Active App Customer", "0999999999", "mock_hash", "CUSTOMER", null
+                                    );
+                                    bootstrapCustomer.setId(99L);
+                                    db.userDao().insertUser(bootstrapCustomer);
+                                }
+
+                                String receiptDescriptionLabel = (itemName == null || itemName.trim().isEmpty()) ? "Store Purchase Item" : itemName;
+
                                 com.example.jijipos.database.entity.Transaction localReceipt = new com.example.jijipos.database.entity.Transaction(
-                                        1L, 1L, 99L, numericalPrice, itemName, timestamp, false
+                                        1L, 1L, 99L, numericalPrice, receiptDescriptionLabel, timestamp, false
                                 );
 
-                                // Execute the raw database save operation directly via your compiled TransactionDao
+                                // Execute the raw database insertion transaction synchronously on this thread
                                 db.transactionDao().insertTransaction(localReceipt);
 
-                                // 2. Bounce back cleanly onto the main thread window to refresh your visual layouts
+                                // 4. ONLY AFTER A SUCCESSFUL WRITE: Bounce back to Main Thread to close frames and display completion indicators
                                 if (getActivity() != null) {
                                     getActivity().runOnUiThread(() -> {
-                                        Toast.makeText(getContext(), "Receipt successfully pinned to local history ledger!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), "Receipt successfully pinned to history ledger!", Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
-                                        resetScannerState(); // Re-activate live CameraX frame streaming engine loops
+                                        resetScannerState(); // Re-activate camera streams
 
-                                        // Optimize device room constraints safety ceiling levels
+                                        // Optimize device room constraints safety storage ceiling levels
                                         executeBackgroundStorageMaintenance();
                                     });
                                 }
@@ -247,12 +280,16 @@ public class CustomerScanFragment extends Fragment {
                                 e.printStackTrace();
                                 if (getActivity() != null) {
                                     getActivity().runOnUiThread(() -> {
-                                        Toast.makeText(getContext(), "Database persist thread error!", Toast.LENGTH_SHORT).show();
+                                        btnSave.setEnabled(true); // Re-enable button click so user can retry safely
+                                        Toast.makeText(getContext(), "Database persist thread failure! Constraints mismatch.", Toast.LENGTH_SHORT).show();
                                     });
                                 }
                             }
                         });
                     });
+
+
+
 
 
 

@@ -79,30 +79,18 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
 
-        // =============================================================
-        // FIXED DATA CARRIER SUB-SYSTEM PASS-THROUGH ROUTINGS
-        // =============================================================
+        // SECURE SESSION EXTRA CARRIER KEYS PASS-THROUGH
+        intent.putExtra("USER_ID", user.getId());              // Explicit unique User ID profile tag
         intent.putExtra("USER_NAME", user.getFullName());
         intent.putExtra("USER_ROLE", role.trim().toUpperCase());
-        intent.putExtra("USER_PHONE", user.getPhoneNumber()); // Securely injected here with zero thread errors!
-        // =============================================================
+        intent.putExtra("USER_PHONE", user.getPhoneNumber());
 
-        switch (role.toUpperCase().trim()) {
-            case "CUSTOMER":
-                Toast.makeText(LoginActivity.this, "Routing to Customer space...", Toast.LENGTH_SHORT).show();
-                break;
-            case "CASHIER":
-                Toast.makeText(LoginActivity.this, "Routing to Cashier workspace...", Toast.LENGTH_SHORT).show();
-                break;
-            case "MANAGER":
-                Toast.makeText(LoginActivity.this, "Routing to Manager workspace...", Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                Toast.makeText(LoginActivity.this, "System admin bypass access unconfigured.", Toast.LENGTH_SHORT).show();
-                break;
-        }
+        // Pass the actual business relation link (Use default 0L fallback for standalone customers)
+        long bizId = (user.getBusinessId() != null) ? user.getBusinessId() : 0L;
+        intent.putExtra("BUSINESS_ID", bizId);
 
         startActivity(intent);
         finish();
     }
+
 }

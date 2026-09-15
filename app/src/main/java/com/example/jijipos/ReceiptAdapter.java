@@ -30,12 +30,20 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Transaction transaction = transactionList.get(position);
-        holder.textTitle.setText(transaction.getCategory()); // Displays item category descriptor label
+
+        // FIX: Extract the descriptor name directly from the transaction. If category contains the string name, load it.
+        String displayTitle = transaction.getCategory();
+        if (displayTitle == null || displayTitle.trim().isEmpty() || displayTitle.equalsIgnoreCase("Shopping")) {
+            displayTitle = "Scanned Digital Invoice"; // High-end premium default fallback tracking string
+        }
+
+        holder.textTitle.setText(displayTitle);
         holder.textAmount.setText("TZS " + String.format(Locale.getDefault(), "%,.2f", transaction.getTotalAmount()));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         holder.textDate.setText(sdf.format(new Date(transaction.getTimestamp())));
     }
+
 
     @Override
     public int getItemCount() {

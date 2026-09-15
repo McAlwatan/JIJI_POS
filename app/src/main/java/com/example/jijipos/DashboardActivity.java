@@ -65,7 +65,10 @@ public class DashboardActivity extends AppCompatActivity {
         texts = new TextView[]{text1, text2, text3, text4};
 
         // 3. Unpack User Account Extras passed down from Login Activity
+        // Unpack dynamic secure session identifiers passed down from login activity
         Intent incomingIntent = getIntent();
+        long activeSessionUserId = incomingIntent.getLongExtra("USER_ID", 0L);
+        long activeSessionBusinessId = incomingIntent.getLongExtra("BUSINESS_ID", 0L);
         String userName = incomingIntent.getStringExtra("USER_NAME");
         userRole = incomingIntent.getStringExtra("USER_ROLE");
 
@@ -74,35 +77,32 @@ public class DashboardActivity extends AppCompatActivity {
 
         textWelcomeBanner.setText("Habari, " + userName + "!");
 
-        // Set up click listener for your premium top header overflow menu popup
-        if (btnHeaderMenu != null) {
-            btnHeaderMenu.setOnClickListener(this::showHeaderMenu);
-        }
-
-        // ========================================================
-        // LIVE DYNAMIC SHIFT SALES AGGREGATES LEDGER ENGINE
-        // ========================================================
         java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase db = AppDatabase.getInstance(this);
 
-            // Calculate time lookup boundaries matching exactly the current 24-hour window
             long endTime = System.currentTimeMillis();
-            long startTime = endTime - (24 * 60 * 60 * 1000);
+            long startTime = endTime - (24 * 60 * 60 * 1000); // 24-hour shift timeframe
 
-            // FIX: Call it synchronously on the background thread without the lambda callback argument
-            Double totalSalesVolume = db.transactionDao().getBusinessSalesTotal(1L, startTime, endTime);
+            final Double computedSalesVolume;
+
+            if (userRole.equalsIgnoreCase("MANAGER")) {
+                // MANAGER: Pull corporate enterprise aggregates spanning all store cashiers
+                computedSalesVolume = db.transactionDao().getManagerEnterpriseSalesTotal(activeSessionBusinessId, startTime, endTime);
+            } else if (userRole.equalsIgnoreCase("CASHIER")) {
+                // CASHIER: Restrict visibility completely to their own shift sales entries only!
+                computedSalesVolume = db.transactionDao().getPersonalCashierSalesTotal(activeSessionUserId, startTime, endTime);
+            } else {
+                // CUSTOMER: Falls back to customer-specific summation methods
+                computedSalesVolume = db.transactionDao().getCustomerExpensesSum(99L, startTime, endTime);
+            }
 
             runOnUiThread(() -> {
-                double finalDisplayTotal = (totalSalesVolume != null) ? totalSalesVolume : 0.0;
-
-                // Format output numbers cleanly into your currency template text box layout
+                double finalDisplayTotal = (computedSalesVolume != null) ? computedSalesVolume : 0.0;
                 if (textLiveBalanceValue != null) {
                     textLiveBalanceValue.setText(String.format(Locale.US, "%,.2f TZS", finalDisplayTotal));
                 }
             });
         });
-        ;
-        // ========================================================
 
         // 4. ROLE-BASED ACCESS CONTROL SEGREGATION MATRIX
         if (userRole.equalsIgnoreCase("CUSTOMER")) {

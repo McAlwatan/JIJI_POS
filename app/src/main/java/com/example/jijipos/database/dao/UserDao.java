@@ -32,4 +32,9 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE phoneNumber = :managerPhone AND role = 'MANAGER' LIMIT 1")
     User getManagerProfileByPhone(String managerPhone);
+
+    // Add this query directly inside your UserDao.java interface block
+    @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
+    com.example.jijipos.database.entity.User getUserById(long id);
+
 }

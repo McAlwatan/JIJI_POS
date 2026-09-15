@@ -21,9 +21,9 @@ public interface TransactionDao {
     List<Transaction> getAllTransactionsForBusiness(long businessId);
 
     // Month 2 Core: Aggregates total sales for a business within a specific timestamp window
-    // This allows you to track sales by day, week, month, or year
+    // CHANGED TO Double TO SAFELY HANDLE NULL VALUES WHEN DATABASE IS NEW
     @Query("SELECT SUM(totalAmount) FROM transactions WHERE businessId = :businessId AND isRefunded = 0 AND timestamp BETWEEN :startTime AND :endTime")
-    double getBusinessSalesTotal(long businessId, long startTime, long endTime);
+    Double getBusinessSalesTotal(long businessId, long startTime, long endTime);
 
     // Month 2 Core: Aggregates personal spending totals for a standalone Customer account
     @Query("SELECT SUM(totalAmount) FROM transactions WHERE customerId = :customerId AND isRefunded = 0 AND timestamp BETWEEN :startTime AND :endTime")
@@ -34,4 +34,15 @@ public interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE customerId = :customerId ORDER BY timestamp DESC")
     List<Transaction> getReceiptHistoryByCustomer(long customerId);
+
+    // Place this directly inside your TransactionDao.java interface source file
+    @Query("SELECT SUM(totalAmount) FROM transactions WHERE customerId = :customerId AND timestamp >= :startTime AND timestamp <= :endTime")
+    Double getCustomerExpensesSum(long customerId, long startTime, long endTime);
+
+    // Fetching the total amount for the cashier's personal sales
+    @Query("SELECT SUM(totalAmount) FROM transactions WHERE cashierId = :cashierId AND timestamp >= :startTime AND timestamp <= :endTime")
+    Double getPersonalCashierSalesTotal(long cashierId, long startTime, long endTime);
+
+    @Query("SELECT SUM(totalAmount) FROM transactions WHERE businessId = :businessId AND timestamp >= :startTime AND timestamp <= :endTime")
+    Double getManagerEnterpriseSalesTotal(long businessId, long startTime, long endTime);
 }

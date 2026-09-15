@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)
     implementation(libs.material)
+    implementation(libs.swiperefreshlayout)
 
     val cameraxVersion = "1.4.0"
     implementation("androidx.camera:camera-core:$cameraxVersion")
@@ -52,6 +53,9 @@ dependencies {
 
     // offline QR code generator
     implementation("com.google.zxing:core:3.5.3")
+
+    //location
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
