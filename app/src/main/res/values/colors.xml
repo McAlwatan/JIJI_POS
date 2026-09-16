@@ -17,5 +17,17 @@
     <color name="accent_orange">#FF7A45</color>
     <color name="teal_soft">#331F8A6E</color>
     <color name="orange_soft">#33FF7A45</color>
+    <color name="light_orange">#FFD285</color>
+    <color name="light_cyan">#D1FAFA</color>
     <color name="nav_inactive">#7A7A7C</color>
+    <color name="fv_bg">#0A0A0A</color>          <!-- screen background -->
+    <color name="fv_surface">#151515</color>     <!-- inputs, social buttons -->
+    <color name="fv_stroke">#272727</color>      <!-- idle borders, dividers -->
+    <color name="fv_ink">#FFFFFF</color>         <!-- primary text -->
+    <color name="fv_muted">#9B9B9B</color>       <!-- secondary text, hints -->
+    <color name="fv_accent">#C6DCE6</color>      <!-- pale blue: primary action -->
+    <color name="fv_on_accent">#0A0A0A</color>   <!-- text on pale blue -->
+    <color name="fv_gold">#D9B14C</color>
+    <color name="fv_orange">#F05A28</color>
+    <color name="fv_ripple">#22C6DCE6</color>
 </resources>

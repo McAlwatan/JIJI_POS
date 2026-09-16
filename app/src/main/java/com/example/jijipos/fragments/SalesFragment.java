@@ -110,9 +110,9 @@ public class SalesFragment extends Fragment {
                             if (addresses != null && !addresses.isEmpty()) {
                                 Address address = addresses.get(0);
                                 // Compile clear readable text string matching local environment
-                                String locality = address.getLocality() != null ? address.getLocality() : "Dar es Salaam"; //
+                                String locality = address.getLocality() != null ? address.getLocality() : "Dar es Salaam";
                                 String featureName = address.getFeatureName() != null ? address.getFeatureName() : "";
-                                resolvedLocationAddress = featureName + ", " + locality + ", TZ"; //
+                                resolvedLocationAddress = featureName + ", " + locality + ", TZ";
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -126,20 +126,20 @@ public class SalesFragment extends Fragment {
     }
 
     private void executeReceiptQrGeneration() {
-        String itemName = inputItemName.getText().toString().trim(); //
-        String itemPrice = inputItemPrice.getText().toString().trim(); //
+        String itemName = inputItemName.getText().toString().trim();
+        String itemPrice = inputItemPrice.getText().toString().trim();
 
-        if (TextUtils.isEmpty(itemName)) { //
-            inputItemName.setError("Item name is required!"); //
-            return; //
+        if (TextUtils.isEmpty(itemName)) {
+            inputItemName.setError("Item name is required!");
+            return;
         }
-        if (TextUtils.isEmpty(itemPrice)) { //
-            inputItemPrice.setError("Price is required!"); //
-            return; //
+        if (TextUtils.isEmpty(itemPrice)) {
+            inputItemPrice.setError("Price is required!");
+            return;
         }
 
         double totalAmount = Double.parseDouble(itemPrice);
-        long currentUnixTime = System.currentTimeMillis(); //
+        long currentUnixTime = System.currentTimeMillis();
 
         // Unpack real session variables securely passed from active DashboardActivity session
         Intent intent = requireActivity().getIntent();
@@ -147,10 +147,6 @@ public class SalesFragment extends Fragment {
         long activeBusinessId = intent.getLongExtra("BUSINESS_ID", 1L); //
         String cashierName = intent.getStringExtra("USER_NAME"); //
         if (cashierName == null) cashierName = "Operator";
-
-        // ========================================================
-        // SAVE COPY OF THE SALE SECURELY TO ROOM SQLITE PERSISTENCE
-        // ========================================================
         final String finalCashierName = cashierName;
         Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase db = AppDatabase.getInstance(getContext());

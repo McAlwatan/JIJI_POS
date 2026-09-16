@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/values/dimens.xml — baseline (phones ~360dp wide).
+     Overridden in values-sw600dp and values-land. Every size the login
+     screen uses lives here, so one file controls the whole scale. -->
+<resources>
+    <dimen name="fv_screen_padding">24dp</dimen>
+    <dimen name="fv_content_max_width">480dp</dimen>
+
+    <dimen name="fv_hero_top">12dp</dimen>
+    <dimen name="fv_hero_bottom">28dp</dimen>
+    <dimen name="fv_hero_max_height">260dp</dimen>
+
+    <dimen name="fv_title_text">30sp</dimen>
+    <dimen name="fv_subtitle_text">14sp</dimen>
+    <dimen name="fv_body_text">14sp</dimen>
+    <dimen name="fv_small_text">13sp</dimen>
+    <dimen name="fv_button_text">15sp</dimen>
+
+    <dimen name="fv_input_radius">18dp</dimen>
+    <dimen name="fv_pill_radius">30dp</dimen>
+    <dimen name="fv_button_height">58dp</dimen>
+    <dimen name="fv_social_size">54dp</dimen>
+    <dimen name="fv_social_gap">14dp</dimen>
+    <dimen name="fv_gap_sm">12dp</dimen>
+    <dimen name="fv_gap_md">20dp</dimen>
+    <dimen name="fv_gap_lg">28dp</dimen>
+</resources>

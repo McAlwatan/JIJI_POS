@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="240dp"
+    android:viewportWidth="360"
+    android:viewportHeight="240">
+
+    <!-- large outlined circle -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:pathData="M160,92 a92,92 0 1,0 184,0 a92,92 0 1,0 -184,0" />
+
+    <!-- mustard disc -->
+    <path
+        android:fillColor="@color/light_orange"
+        android:pathData="M48,112 a56,56 0 1,0 112,0 a56,56 0 1,0 -112,0" />
+
+    <!-- pale blue disc -->
+    <path
+        android:fillColor="#C6DCE6"
+        android:pathData="M190,158 a58,58 0 1,0 116,0 a58,58 0 1,0 -116,0" />
+
+    <!-- outlined circle overlapping the disc -->
+<!--    <path-->
+<!--        android:fillColor="#00000000"-->
+<!--        android:strokeColor="#FFFFFF"-->
+<!--        android:strokeWidth="3"-->
+<!--        android:pathData="M146,166 a72,72 0 1,0 144,0 a72,72 0 1,0 -144,0" />-->
+
+    <!-- small ringed dot -->
+    <path
+        android:fillColor="@color/light_orange"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:pathData="M309,42 a13,13 0 1,0 26,0 a13,13 0 1,0 -26,0" />
+
+    <!-- orange disc bleeding off the left edge -->
+    <path
+        android:fillColor="@color/light_orange"
+        android:pathData="M-22,200 a30,30 0 1,0 60,0 a30,30 0 1,0 -60,0" />
+</vector>

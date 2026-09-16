@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/values-land/dimens.xml — landscape and very short screens:
+     shrink the artwork so the form still reaches the keyboard. -->
+<resources>
+    <dimen name="fv_hero_top">4dp</dimen>
+    <dimen name="fv_hero_bottom">16dp</dimen>
+    <dimen name="fv_hero_max_height">140dp</dimen>
+    <dimen name="fv_title_text">26sp</dimen>
+    <dimen name="fv_gap_lg">20dp</dimen>
+</resources>

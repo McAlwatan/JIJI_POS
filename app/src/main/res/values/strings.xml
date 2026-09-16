@@ -25,4 +25,7 @@
     <string name="alreadyHaveAccount">Already have an account?</string>
     <string name="noReceiptDescription">No scanned receipts found.\nGo to Scan QR to save your first invoice!</string>
     <string name="myReceipts">My Receipts</string>
+    <string name="loginWithApple">Continue with Apple</string>
+    <string name="loginWithFacebook">Continue with Facebook</string>
+    <string name="loginArtwork">Decorative artwork</string>
 </resources>

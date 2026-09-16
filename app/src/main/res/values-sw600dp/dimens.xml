@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/values-sw600dp/dimens.xml — tablets / foldables opened out.
+     Content stays centred and capped so the form never stretches. -->
+<resources>
+    <dimen name="fv_screen_padding">40dp</dimen>
+    <dimen name="fv_content_max_width">520dp</dimen>
+
+    <dimen name="fv_hero_bottom">36dp</dimen>
+    <dimen name="fv_hero_max_height">320dp</dimen>
+
+    <dimen name="fv_title_text">36sp</dimen>
+    <dimen name="fv_subtitle_text">16sp</dimen>
+    <dimen name="fv_body_text">16sp</dimen>
+    <dimen name="fv_button_text">16sp</dimen>
+
+    <dimen name="fv_button_height">64dp</dimen>
+    <dimen name="fv_social_size">60dp</dimen>
+    <dimen name="fv_pill_radius">32dp</dimen>
+</resources>
