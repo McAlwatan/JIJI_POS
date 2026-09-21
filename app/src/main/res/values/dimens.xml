@@ -24,4 +24,11 @@
     <dimen name="fv_gap_sm">12dp</dimen>
     <dimen name="fv_gap_md">20dp</dimen>
     <dimen name="fv_gap_lg">28dp</dimen>
+
+    <dimen name="fv_chip_height">38dp</dimen>
+    <dimen name="fv_chip_radius">19dp</dimen>
+    <dimen name="fv_amount_text">36sp</dimen>
+    <dimen name="fv_graph_card_radius">24dp</dimen>
+    <dimen name="fv_graph_height">160dp</dimen>
+    <dimen name="fv_action_icon_size">56dp</dimen>
 </resources>

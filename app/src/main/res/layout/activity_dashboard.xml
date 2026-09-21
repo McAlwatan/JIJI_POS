@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    res/layout/activity_dashboard.xml
+    Fairvest palette applied to your original structure — every id is
+    unchanged (textWelcomeBanner, btnHeaderMenu, textRoleTag,
+    textLiveBalanceValue, fragmentContainer, tab1-4, icon1-4, text1-4),
+    so DashboardActivity.java needs no changes.
+
+    Colour mapping from your original hardcoded hex:
+      #111111 (screen bg)      -> fv_bg
+      #161616 (hero + nav bg)  -> fv_surface
+      #222222 (pill track)     -> fv_stroke
+      #CCE3DE (active pill)    -> fv_accent  (text: fv_on_accent)
+      #88FFFFFF / alpha whites -> fv_ink + android:alpha
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://android.com"
-    xmlns:tools="http://android.com"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#111111"
+    android:background="@color/fv_bg"
     android:orientation="vertical"
     tools:context=".DashboardActivity">
 
-    <!-- UPPER DARK BALANCE TRACKER CARD BLOCK -->
+    <!-- ========== UPPER DARK BALANCE HERO CARD ========== -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="28dp"
-        android:background="#161616">
+        android:background="@color/fv_surface">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,61 +40,64 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Money"
-                android:textColor="@color/white"
+                android:textColor="@color/fv_ink"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:layout_centerVertical="true" />
 
-            <!-- ADDED THE FUNCTIONAL ID TAG NATIVELY HERE -->
             <ImageView
                 android:id="@+id/btnHeaderMenu"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_sort_by_size"
-                app:tint="@color/white"
+                app:tint="@color/fv_ink"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="4dp" />
 
         </RelativeLayout>
-
 
         <!-- Dynamic Casing Selector Pill Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="@drawable/bg_navbar"
-            android:backgroundTint="#222222"
+            android:backgroundTint="@color/fv_stroke"
             android:orientation="horizontal"
             android:padding="4dp"
             android:layout_marginTop="24dp"
             android:gravity="center_vertical">
+
             <TextView
                 android:id="@+id/textRoleTag"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_nav_active_pill"
-                android:backgroundTint="#CCE3DE"
+                android:backgroundTint="@color/fv_accent"
                 android:text="MANAGER"
-                android:textColor="#111111"
+                android:textColor="@color/fv_on_accent"
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:gravity="center" />
+
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_help"
-                app:tint="#40FFFFFF"
-                android:layout_marginHorizontal="12dp"/>
+                app:tint="@color/fv_ink"
+                android:alpha="0.25"
+                android:layout_marginHorizontal="12dp" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="Account Summary"
-                android:textColor="@color/white"
-                android:alpha="0.5"
+                android:textColor="@color/fv_muted"
                 android:textSize="12sp"
                 android:gravity="center" />
         </LinearLayout>
@@ -91,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1,400.00 TZS"
-            android:textColor="@color/white"
+            android:textColor="@color/fv_ink"
             android:textSize="40sp"
             android:textStyle="bold"
             android:gravity="center_horizontal"
@@ -101,28 +118,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Active Shift Sales Volume"
-            android:textColor="@color/white"
-            android:alpha="0.5"
+            android:textColor="@color/fv_muted"
             android:textSize="13sp"
             android:gravity="center_horizontal"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="24dp" />
     </LinearLayout>
 
-    <!-- LOWER CENTRAL INTERACTIVE MODULE TRAY -->
+    <!-- ========== LOWER WHITE INTERACTIVE MODULE TRAY ========== -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:cardCornerRadiusTopStart="32dp"
-        app:cardCornerRadiusTopEnd="32dp"
-        app:cardCornerRadiusBottomStart="0dp"
-        app:cardCornerRadiusBottomEnd="0dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Fairvest.TopRounded"
         app:cardElevation="0dp"
         app:strokeWidth="0dp"
-        android:backgroundTint="@color/white">
+        android:backgroundTint="@color/fv_surface">
 
-        <!-- FrameLayout container where the swappable fragments load -->
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
@@ -131,32 +143,32 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- ADAPTIVE SYSTEM COMPONENT NAVIGATION BAR FOOTER (STAYS DEEP CHARCOAL) -->
+    <!-- ========== BOTTOM NAV (stays dark, matches hero card) ========== -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="68dp"
-        android:background="#161616"
+        android:background="@color/fv_surface"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
         <LinearLayout android:id="@+id/tab1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
-            <ImageView android:id="@+id/icon1" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_home" app:tint="#88FFFFFF"/>
-            <TextView android:id="@+id/text1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp"/>
+            <ImageView android:id="@+id/icon1" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_home" app:tint="@color/fv_ink" android:alpha="0.55"/>
+            <TextView android:id="@+id/text1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home" android:textColor="@color/fv_ink" android:textSize="11sp" android:layout_marginTop="4dp"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/tab2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
-            <ImageView android:id="@+id/icon2" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_sales" app:tint="#88FFFFFF"/>
-            <TextView android:id="@+id/text2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sales" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp" android:visibility="visible"/>
+            <ImageView android:id="@+id/icon2" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_sales" app:tint="@color/fv_ink" android:alpha="0.55"/>
+            <TextView android:id="@+id/text2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sales" android:textColor="@color/fv_ink" android:textSize="11sp" android:layout_marginTop="4dp" android:visibility="visible"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/tab3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
-            <ImageView android:id="@+id/icon3" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_staff" app:tint="#88FFFFFF"/>
-            <TextView android:id="@+id/text3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Staff" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp" android:visibility="visible"/>
+            <ImageView android:id="@+id/icon3" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_staff" app:tint="@color/fv_ink" android:alpha="0.55"/>
+            <TextView android:id="@+id/text3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Staff" android:textColor="@color/fv_ink" android:textSize="11sp" android:layout_marginTop="4dp" android:visibility="visible"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/tab4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
-            <ImageView android:id="@+id/icon4" android:layout_width="22dp" android:layout_height="22dp" android:src="@android:drawable/ic_menu_close_clear_cancel" app:tint="#88FFFFFF"/>
-            <TextView android:id="@+id/text4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Exit" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp"/>
+            <ImageView android:id="@+id/icon4" android:layout_width="22dp" android:layout_height="22dp" android:src="@android:drawable/ic_menu_close_clear_cancel" app:tint="@color/fv_ink" android:alpha="0.55"/>
+            <TextView android:id="@+id/text4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Exit" android:textColor="@color/fv_ink" android:textSize="11sp" android:layout_marginTop="4dp"/>
         </LinearLayout>
     </LinearLayout>
 

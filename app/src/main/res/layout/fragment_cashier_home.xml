@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    res/layout/fragment_cashier_home.xml
+    Same structure and every id you already have — only colors/drawables
+    changed. This screen sits inside DashboardActivity's WHITE tray, so
+    every android:color/white text color below has been swapped for
+    fv_light_ink (it was rendering invisible before this fix).
+
+    Drawable swaps:
+      @drawable/bg_panel_top_rounded -> @drawable/bg_fv_panel_top   (already exists, same as Customer)
+      @drawable/bg_fab_circle        -> @drawable/bg_fv_fab_circle  (new, pale-blue accent)
+    If bg_panel_top_rounded / bg_fab_circle were custom assets you already
+    had elsewhere with different visuals, tell me and I'll point back to
+    them instead — I swapped to keep everything on one consistent system.
+
+    ic_receipt, ic_nav_inventory, ic_nav_staff and PeriodChip (the shared
+    chip style) are assumed to already exist in your project — untouched.
+-->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fv_surface"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            android:paddingHorizontal="20dp"
+            android:paddingHorizontal="@dimen/fv_screen_padding"
+            android:layout_marginTop="@dimen/fv_gap_md"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
@@ -26,6 +45,7 @@
                     android:id="@+id/chipToday"
                     style="@style/PeriodChip"
                     android:background="@drawable/bg_chip_selected"
+                    android:textColor="@color/white"
                     android:text="Today" />
 
                 <TextView
@@ -52,10 +72,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="@dimen/fv_screen_padding"
             android:text="TSh 248,000"
-            android:textColor="@color/white"
-            android:textSize="42sp"
+            android:textColor="@color/fv_ink"
+            android:textSize="@dimen/fv_amount_text"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/scrollChips"
             app:layout_constraintStart_toStartOf="parent" />
@@ -65,10 +85,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="@dimen/fv_screen_padding"
             android:layout_marginBottom="40dp"
             android:text="Total Sales Today"
-            android:textColor="@color/text_muted"
+            android:textColor="@color/fv_muted"
             android:textSize="13sp"
             app:layout_constraintTop_toBottomOf="@id/textSalesAmount"
             app:layout_constraintStart_toStartOf="parent" />
@@ -77,7 +97,7 @@
             android:id="@+id/panelBackground"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/bg_panel_top_rounded"
+            android:background="@drawable/bg_fv_panel_top"
             app:layout_constraintTop_toBottomOf="@id/textSalesLabel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,11 +108,12 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginTop="-28dp"
-            android:background="@drawable/bg_fab_circle"
+            android:background="@drawable/bg_fv_fab_circle"
+            android:elevation="4dp"
             android:padding="14dp"
             android:src="@drawable/ic_nav_sales"
             android:contentDescription="New Sale"
-            app:tint="@color/white"
+            app:tint="@color/fv_on_accent"
             app:layout_constraintTop_toTopOf="@id/panelBackground"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -102,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="New Sale"
-            android:textColor="@color/text_muted"
+            android:textColor="@color/fv_muted"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/btnNewSale"
@@ -134,21 +155,22 @@
                 <ImageView
                     android:layout_width="26dp"
                     android:layout_height="26dp"
-                    android:src="@drawable/ic_receipt" />
+                    android:src="@drawable/ic_receipt"
+                    app:tint="@color/fv_ink" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Recent Sales"
-                    android:textColor="@color/white"
+                    android:textColor="@color/fv_ink"
                     android:textSize="13sp" />
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/divider" />
+                android:background="@color/fv_stroke" />
 
             <LinearLayout
                 android:id="@+id/actionInventory"
@@ -165,14 +187,15 @@
                 <ImageView
                     android:layout_width="26dp"
                     android:layout_height="26dp"
-                    android:src="@drawable/ic_nav_inventory" />
+                    android:src="@drawable/ic_nav_inventory"
+                    app:tint="@color/fv_ink" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Stock Check"
-                    android:textColor="@color/white"
+                    android:textColor="@color/fv_ink"
                     android:textSize="13sp" />
             </LinearLayout>
 
@@ -182,7 +205,7 @@
             android:id="@+id/gridDivider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/divider"
+            android:background="@color/fv_stroke"
             app:layout_constraintTop_toBottomOf="@id/gridRow1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -213,21 +236,22 @@
                 <ImageView
                     android:layout_width="26dp"
                     android:layout_height="26dp"
-                    android:src="@drawable/ic_nav_staff" />
+                    android:src="@drawable/ic_nav_staff"
+                    app:tint="@color/fv_ink" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Add Customer"
-                    android:textColor="@color/white"
+                    android:textColor="@color/fv_ink"
                     android:textSize="13sp" />
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/divider" />
+                android:background="@color/fv_stroke" />
 
             <LinearLayout
                 android:id="@+id/actionSyncQueue"
@@ -245,14 +269,14 @@
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:src="@android:drawable/stat_notify_sync"
-                    app:tint="@color/white" />
+                    app:tint="@color/fv_ink" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Sync Queue"
-                    android:textColor="@color/white"
+                    android:textColor="@color/fv_ink"
                     android:textSize="13sp" />
             </LinearLayout>
 

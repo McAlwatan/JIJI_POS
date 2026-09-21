@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/bg_fv_icon_circle.xml — the round tile behind each
+     quick-action icon (Scan QR / My Receipts / Spending), same visual
+     language as the login screen's social buttons. -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/fv_ripple">
+    <item android:id="@android:id/mask">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/fv_light_surface" />
+        </shape>
+    </item>
+</ripple>

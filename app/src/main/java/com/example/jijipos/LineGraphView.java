@@ -11,16 +11,34 @@ import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
 
+import java.util.Locale;
+
+/**
+ * Real-data trend graph — no baked-in mock arrays. Call setData(labels,
+ * values) with whatever CustomerHomeFragment pulls from the database;
+ * an empty call renders an empty-state message instead of a fake curve.
+ *
+ * Two things changed from the original version:
+ *  1. The Y-axis ceiling used to be hardcoded to 2,000,000 TZS, so real
+ *     spending (a few thousand TZS) rendered as a flat line pinned to the
+ *     bottom. It's now computed from the actual data via niceCeiling().
+ *  2. The grid/label colors were tuned for a dark card (#25FFFFFF white
+ *     grid lines, light gray text) but this view now sits inside a WHITE
+ *     card (fv_light_surface) — those were nearly invisible there, so
+ *     they're now dark-on-light. The line/fill accent is also switched
+ *     from neon green to the app's blue accent family for consistency
+ *     with the rest of the fairvest-styled screens.
+ */
 public class LineGraphView extends View {
 
     private Paint linePaint;
     private Paint fillPaint;
     private Paint gridPaint;
     private Paint labelPaint;
+    private Paint emptyStatePaint;
 
-    // Default Mock Trend Data Points to perfectly replicate the curve wave layout matching your Selcom reference image
-    private float[] dataPoints = new float[]{400000f, 650000f, 1300000f, 950000f, 450000f, 950000f, 850000f, 1400000f};
-    private String[] axisXLabels = new String[]{"1", "2", "3", "4", "5", "6", "7"};
+    private float[] dataPoints = new float[0];
+    private String[] axisXLabels = new String[0];
 
     public LineGraphView(Context context) {
         super(context);
@@ -33,80 +51,92 @@ public class LineGraphView extends View {
     }
 
     private void init() {
-        // 1. Neon Green Premium Spline Curve Vector Config
         linePaint = new Paint();
-        linePaint.setColor(Color.parseColor("#4CD964")); // Vibrant Neon Green matching Selcom Pesa
+        linePaint.setColor(Color.parseColor("#2F6FED"));
         linePaint.setStrokeWidth(6f);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setAntiAlias(true);
         linePaint.setStrokeCap(Paint.Cap.ROUND);
         linePaint.setStrokeJoin(Paint.Join.ROUND);
 
-        // 2. Translucent Green Area Fill Gradient Config under the curve path
         fillPaint = new Paint();
         fillPaint.setStyle(Paint.Style.FILL);
         fillPaint.setAntiAlias(true);
 
-        // 3. Thin White/Gray Muted Axis Grid Lines Config
         gridPaint = new Paint();
-        gridPaint.setColor(Color.parseColor("#25FFFFFF")); // 15% opacity white for elegant dark mode contrast
+        gridPaint.setColor(Color.parseColor("#25FFFFFF")); // 15% white — reads on any dark card
         gridPaint.setStrokeWidth(2f);
         gridPaint.setAntiAlias(true);
 
-        // 4. Muted Translucent Label Typography Text Config
         labelPaint = new Paint();
-        labelPaint.setColor(Color.parseColor("#8E8E93")); // Clean system gray color label
+        labelPaint.setColor(Color.parseColor("#8E8E93")); // system gray, legible on dark
         labelPaint.setTextSize(26f);
         labelPaint.setAntiAlias(true);
+
+        emptyStatePaint = new Paint();
+        emptyStatePaint.setColor(Color.parseColor("#9B9B9B"));
+        emptyStatePaint.setTextSize(28f);
+        emptyStatePaint.setAntiAlias(true);
+        emptyStatePaint.setTextAlign(Paint.Align.CENTER);
     }
 
-    public void setData(float[] newDataPoints) {
-        this.dataPoints = newDataPoints;
-        invalidate(); // Force immediate canvas redrawing update loop
+    /**
+     * @param labels one entry per data point — pass "" for points you
+     *               don't want printed (e.g. label every 3rd hour on a
+     *               24-point day so the axis doesn't clash)
+     * @param values real amounts, same length as labels
+     */
+    public void setData(String[] labels, float[] values) {
+        this.axisXLabels = (labels != null) ? labels : new String[0];
+        this.dataPoints = (values != null) ? values : new float[0];
+        invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (dataPoints == null || dataPoints.length < 2) return;
 
         float width = getWidth();
         float height = getHeight();
 
-        // Establish proper canvas grid margins room spacing definitions to fit side labels safely
-        float paddingLeft = 100f;   // Room size footprint block for the Y-Axis Labels ("2M", "1M")
+        if (dataPoints.length < 2) {
+            canvas.drawText("No spending yet this period", width / 2f, height / 2f, emptyStatePaint);
+            return;
+        }
+
+        float paddingLeft = 100f;
         float paddingRight = 40f;
         float paddingTop = 40f;
-        float paddingBottom = 60f;  // Room size footprint block for the X-Axis Labels ("1", "2", "3")
+        float paddingBottom = 60f;
 
         float graphWidth = width - paddingLeft - paddingRight;
         float graphHeight = height - paddingTop - paddingBottom;
 
-        // Force maximum limit range boundary cap checks targeting 2M (2,000,000 TZS) matching reference metrics
-        float maxVal = 2000000f;
+        float rawMax = 0f;
+        for (float v : dataPoints) rawMax = Math.max(rawMax, v);
+        float maxVal = niceCeiling(rawMax);
 
-        // --- DRAW Y-AXIS HORIZONTAL GRID LINES AND CONTEMPORARY LABELS ---
-        String[] yLabels = new String[]{"2M", "1M", "750K", "500K", "TZS 0"};
-        float[] yPositions = new float[]{0f, 0.5f, 0.625f, 0.75f, 1f}; // Percentages relative to the max scaling ceiling boundaries
+        String[] yLabels = new String[]{
+                formatAxisValue(maxVal),
+                formatAxisValue(maxVal * 0.75f),
+                formatAxisValue(maxVal * 0.5f),
+                formatAxisValue(maxVal * 0.25f),
+                "TZS 0"
+        };
+        float[] yPositions = new float[]{0f, 0.25f, 0.5f, 0.75f, 1f};
 
         for (int i = 0; i < yLabels.length; i++) {
             float y = paddingTop + (graphHeight * yPositions[i]);
-
-            // Draw horizontal cross grid guideline vector path
             canvas.drawLine(paddingLeft, y, width - paddingRight, y, gridPaint);
-
-            // Render text string descriptions alignment anchors tags
             canvas.drawText(yLabels[i], 15f, y + 8f, labelPaint);
         }
 
-        // --- CALCULATION OF THE GLOWING GREEN TREND CURVE TRAJECTORY WAVE PATH ---
         float stepX = graphWidth / (dataPoints.length - 1);
         Path path = new Path();
         Path fillPath = new Path();
 
         for (int i = 0; i < dataPoints.length; i++) {
             float x = paddingLeft + (i * stepX);
-            // Protect value overflows cap boundaries safely
             float boundedValue = Math.min(dataPoints[i], maxVal);
             float y = paddingTop + graphHeight - ((boundedValue / maxVal) * graphHeight);
 
@@ -124,21 +154,38 @@ public class LineGraphView extends View {
                 fillPath.close();
             }
 
-            // --- DRAW X-AXIS TIMELINE STEP MARKERS FOOTER LABELS ---
-            if (i < axisXLabels.length) {
+            if (i < axisXLabels.length && axisXLabels[i] != null && !axisXLabels[i].isEmpty()) {
                 canvas.drawText(axisXLabels[i], x - 10f, height - 15f, labelPaint);
             }
         }
 
-        // Apply dark-mode fading green linear color background gradient under the curve path vector limits
         fillPaint.setShader(new LinearGradient(0, paddingTop, 0, paddingTop + graphHeight,
-                Color.parseColor("#454CD964"), Color.TRANSPARENT, Shader.TileMode.CLAMP));
+                Color.parseColor("#402F6FED"), Color.TRANSPARENT, Shader.TileMode.CLAMP));
 
-        // Commit drawing paths arrays layout directly to view canvas layer
         canvas.drawPath(fillPath, fillPaint);
         canvas.drawPath(path, linePaint);
-
-        // Draw primary vertical base anchor frame layout boundary line
         canvas.drawLine(paddingLeft, paddingTop, paddingLeft, paddingTop + graphHeight, gridPaint);
+    }
+
+    /** Rounds up to a "nice" axis ceiling (1 / 2 / 5 x 10^n) instead of the raw max. */
+    private float niceCeiling(float value) {
+        if (value <= 0f) return 1000f; // sensible floor so a near-empty graph still has a readable axis
+        double exponent = Math.floor(Math.log10(value));
+        double magnitude = Math.pow(10, exponent);
+        double normalized = value / magnitude;
+
+        double niceNormalized;
+        if (normalized <= 1) niceNormalized = 1;
+        else if (normalized <= 2) niceNormalized = 2;
+        else if (normalized <= 5) niceNormalized = 5;
+        else niceNormalized = 10;
+
+        return (float) (niceNormalized * magnitude);
+    }
+
+    private String formatAxisValue(float value) {
+        if (value >= 1_000_000f) return String.format(Locale.US, "%.1fM", value / 1_000_000f);
+        if (value >= 1_000f) return String.format(Locale.US, "%.0fK", value / 1_000f);
+        return String.format(Locale.US, "%.0f", value);
     }
 }

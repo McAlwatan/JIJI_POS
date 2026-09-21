@@ -1,119 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    res/layout/fragment_content.xml — the "New Sale" screen, inflated by
+    SalesFragment.java. Every id kept exact (inputItemName, inputItemPrice,
+    buttonGenerateInvoice, cardQrDisplayHolder, imageQrOutputPlaceholder),
+    so SalesFragment.java needs NO changes — its location/QR-generation
+    logic is completely untouched.
+
+    Uses the new Fairvest.TextInput.Light / Fairvest.EditText.Light styles
+    instead of the original's manually-specified per-field attributes —
+    same visual result, but any future form on this white tray reuses the
+    same two style lines instead of copy-pasting box colors again.
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://android.com"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@android:color/transparent">
+    android:background="@color/fv_surface">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="32dp">
+        android:paddingHorizontal="@dimen/fv_screen_padding"
+        android:paddingVertical="@dimen/fv_gap_lg">
 
-        <!-- Top Section Context Header Row -->
+        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="28dp">
+            android:layout_marginBottom="@dimen/fv_gap_lg">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_edit"
-                app:tint="#111111" />
+                app:tint="@color/fv_ink" />
 
             <TextView
                 android:id="@+id/textFragmentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Sale Invoice"
-                android:textColor="#111111"
+                android:textColor="@color/fv_ink"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 
-        <!-- Upgraded Item Name Field with Dark Outlined Spacing -->
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Fairvest.TextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:hint="Item Description"
-            android:textColorHint="#66111111"
-            app:hintTextColor="#111111"
-            app:boxStrokeColor="#111111"
-            app:boxStrokeWidth="1.5dp"
-            app:boxCornerRadiusTopStart="14dp"
-            app:boxCornerRadiusTopEnd="14dp"
-            app:boxCornerRadiusBottomStart="14dp"
-            app:boxCornerRadiusBottomEnd="14dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_marginBottom="@dimen/fv_gap_sm">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputItemName"
+                style="@style/Fairvest.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:textColor="#111111"
-                android:textSize="15sp"
-                android:paddingVertical="16dp" />
+                android:imeOptions="actionNext"
+                android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Upgraded Price Field with Dark Outlined Spacing -->
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Fairvest.TextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
             android:hint="Total Amount (TZS)"
-            android:textColorHint="#66111111"
-            app:hintTextColor="#111111"
-            app:boxStrokeColor="#111111"
-            app:boxStrokeWidth="1.5dp"
-            app:boxCornerRadiusTopStart="14dp"
-            app:boxCornerRadiusTopEnd="14dp"
-            app:boxCornerRadiusBottomStart="14dp"
-            app:boxCornerRadiusBottomEnd="14dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_marginBottom="@dimen/fv_gap_lg">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputItemPrice"
+                style="@style/Fairvest.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:textColor="#111111"
-                android:textSize="15sp"
-                android:paddingVertical="16dp" />
+                android:imeOptions="actionDone"
+                android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Core Execution Action Trigger Button -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonGenerateInvoice"
+            style="@style/Fairvest.Button"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:backgroundTint="#E65F2B"
-            android:text="GENERATE RECEIPT QR"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:cornerRadius="30dp"
-            android:layout_marginBottom="28dp" />
+            android:layout_height="@dimen/fv_button_height"
+            android:text="Generate Receipt QR"
+            android:layout_marginBottom="@dimen/fv_gap_lg" />
 
-        <!-- Compiled QR Vector Image Display Card Frame Holder -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardQrDisplayHolder"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="#10000000"
-            android:backgroundTint="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            android:backgroundTint="@color/fv_stroke"
             android:visibility="gone">
 
             <ImageView

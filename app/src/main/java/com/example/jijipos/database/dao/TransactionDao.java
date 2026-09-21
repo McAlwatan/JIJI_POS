@@ -45,4 +45,45 @@ public interface TransactionDao {
 
     @Query("SELECT SUM(totalAmount) FROM transactions WHERE businessId = :businessId AND timestamp >= :startTime AND timestamp <= :endTime")
     Double getManagerEnterpriseSalesTotal(long businessId, long startTime, long endTime);
+
+    // ===================== NEW: trend-graph buckets =====================
+    // Feed CustomerHomeFragment's LineGraphView with real per-bucket sums
+    // from the same `transactions` table your QR scanner already writes
+    // to. All three exclude refunds (isRefunded = 0), matching the filter
+    // already used by getCustomerSpendingTotal above. `timestamp` is
+    // stored in MILLISECONDS, so strftime divides by 1000 to get seconds.
+    //
+    // bucketLabel comes back as e.g. "14" (hour), "2026-09-18" (day), or
+    // "2026-09" (month) — CustomerHomeFragment maps these itself rather
+    // than relying on SQL row order, so no extra parsing logic lives here.
+
+    @Query("SELECT strftime('%H', timestamp / 1000, 'unixepoch') AS bucketLabel, " +
+            "SUM(totalAmount) AS bucketTotal FROM transactions " +
+            "WHERE customerId = :customerId AND isRefunded = 0 " +
+            "AND timestamp BETWEEN :startTime AND :endTime " +
+            "GROUP BY bucketLabel ORDER BY bucketLabel ASC")
+    List<SpendBucket> getCustomerSpendByHour(long customerId, long startTime, long endTime);
+
+    @Query("SELECT strftime('%Y-%m-%d', timestamp / 1000, 'unixepoch') AS bucketLabel, " +
+            "SUM(totalAmount) AS bucketTotal FROM transactions " +
+            "WHERE customerId = :customerId AND isRefunded = 0 " +
+            "AND timestamp BETWEEN :startTime AND :endTime " +
+            "GROUP BY bucketLabel ORDER BY bucketLabel ASC")
+    List<SpendBucket> getCustomerSpendByDay(long customerId, long startTime, long endTime);
+
+    @Query("SELECT strftime('%Y-%m', timestamp / 1000, 'unixepoch') AS bucketLabel, " +
+            "SUM(totalAmount) AS bucketTotal FROM transactions " +
+            "WHERE customerId = :customerId AND isRefunded = 0 " +
+            "AND timestamp BETWEEN :startTime AND :endTime " +
+            "GROUP BY bucketLabel ORDER BY bucketLabel ASC")
+    List<SpendBucket> getCustomerSpendByMonth(long customerId, long startTime, long endTime);
+
+    /**
+     * Plain Room POJO — the column aliases above (bucketLabel, bucketTotal)
+     * map onto these public fields by name, no extra annotations needed.
+     */
+    class SpendBucket {
+        public String bucketLabel;
+        public double bucketTotal;
+    }
 }

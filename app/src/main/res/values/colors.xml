@@ -30,4 +30,10 @@
     <color name="fv_gold">#D9B14C</color>
     <color name="fv_orange">#F05A28</color>
     <color name="fv_ripple">#22C6DCE6</color>
-</resources>
+    <color name="fv_chip_accent">#2F6FED</color>
+    <color name="fv_light_ink">#111111</color>       <!-- primary text on white -->
+    <color name="fv_light_muted">#6E6E6E</color>     <!-- secondary text on white -->
+    <color name="fv_light_surface">#F3F3F3</color>   <!-- unselected chip / icon circle fill on white -->
+    <color name="fv_light_stroke">#E7E7E7</color>    <!-- hairline borders on white -->
+    <color name="fv_dark_pill">#171717</color>       <!-- unused now that chips use fv_chip_accent -->
+    </resources>

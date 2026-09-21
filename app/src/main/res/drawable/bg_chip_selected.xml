@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="@color/teal_primary" />
-    <corners android:radius="20dp" />
+<!-- res/drawable/bg_chip_selected.xml
+     Solid accent blue — reads correctly against any dark surface, and
+     pairs with the white chip text your Java sets regardless of theme. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/fv_chip_accent" />
+    <corners android:radius="19dp" />
 </shape>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/bg_fv_fab_circle.xml — the "New Sale" FAB that overlaps
+     the panel edge, same visual trick as the QR circle button in the
+     fairvest reference image. Pale-blue accent, matches the Login/primary
+     action color everywhere else. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/fv_accent" />
+</shape>

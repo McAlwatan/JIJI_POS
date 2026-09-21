@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/color/fv_light_input_stroke.xml — text-field border for forms
+     sitting on the WHITE tray (New Sale, and future light-context forms). -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/fv_accent" android:state_focused="true" />
+    <item android:color="@color/fv_light_stroke" />
+</selector>
