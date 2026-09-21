@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    res/layout/activity_dashboard.xml
-    Fairvest palette applied to your original structure — every id is
-    unchanged (textWelcomeBanner, btnHeaderMenu, textRoleTag,
-    textLiveBalanceValue, fragmentContainer, tab1-4, icon1-4, text1-4),
-    so DashboardActivity.java needs no changes.
-
-    Colour mapping from your original hardcoded hex:
-      #111111 (screen bg)      -> fv_bg
-      #161616 (hero + nav bg)  -> fv_surface
-      #222222 (pill track)     -> fv_stroke
-      #CCE3DE (active pill)    -> fv_accent  (text: fv_on_accent)
-      #88FFFFFF / alpha whites -> fv_ink + android:alpha
--->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

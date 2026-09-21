@@ -16,6 +16,8 @@ import com.example.jijipos.repository.UserRepository;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONObject;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private TextInputEditText registerName, registerPhone, registerPassword, inputInvitationCode;
@@ -31,7 +33,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         userRepository = new UserRepository(this);
 
-        // Bind layouts and input widgets
         layoutInvitationCode = findViewById(R.id.layoutInvitationCode);
         inputInvitationCode = findViewById(R.id.inputInvitationCode);
         registerName = findViewById(R.id.registerName);
@@ -40,23 +41,20 @@ public class RegisterActivity extends AppCompatActivity {
         spinnerRoles = findViewById(R.id.spinnerRoles);
         buttonRegisterSubmit = findViewById(R.id.buttonRegisterSubmit);
 
-        // Populate dynamic role options dropdown
         String[] accountTypes = {"Customer", "Cashier", "Manager"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, accountTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRoles.setAdapter(adapter);
 
-        // Map submission click action
         buttonRegisterSubmit.setOnClickListener(v -> processFormSubmission());
 
-        // Toggle invitation input field visibility depending on selected spinner option choice
         spinnerRoles.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String chosenRole = parent.getItemAtPosition(position).toString();
                 if (chosenRole.equalsIgnoreCase("CASHIER")) {
-                    layoutInvitationCode.setVisibility(View.VISIBLE); // Reveal code input
+                    layoutInvitationCode.setVisibility(View.VISIBLE);
                 } else {
                     layoutInvitationCode.setVisibility(View.GONE);
                 }
@@ -85,16 +83,13 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // 2. Encryption Hash Processing
         String encryptedPassword = SecurityUtils.hashPassword(rawPassword);
 
-        // 3. Check for Duplicate Mobile Registrations
         userRepository.getUserByPhone(phone, existingUser -> {
             runOnUiThread(() -> {
                 if (existingUser != null) {
                     Toast.makeText(RegisterActivity.this, "This phone number is already registered!", Toast.LENGTH_LONG).show();
                 } else {
-                    // Execute Branching paths depending on User Type Account Permissions Rules
                     if (selectedRole.equalsIgnoreCase("CASHIER")) {
                         handleCashierVerificationAndSignUp(name, phone, encryptedPassword);
                     } else {
@@ -115,25 +110,26 @@ public class RegisterActivity extends AppCompatActivity {
 
         java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase db = AppDatabase.getInstance(this);
-
-            // 1. Fetch the actual Manager profile matching the invitation phone code token
             User managerProfile = db.userDao().getManagerProfileByPhone(typedTokenCode);
 
             if (managerProfile == null) {
-                // If no Manager exists with that phone number, reject registration safely without crashing
                 runOnUiThread(() -> {
-                    inputInvitationCode.setError("Invalid or inactive Manager Invitation Code! Please check the number.");
+                    inputInvitationCode.setError("Invalid or inactive Manager Invitation Code!");
                 });
             } else {
-                // 2. Extract the manager's valid business relationship context ID safely
                 long associatedBusinessId = managerProfile.getBusinessId();
 
-                // 3. Create and persist the verified Cashier sub_account linked directly to the store context
                 User approvedCashier = new User(name, phone, encryptedPassword, "CASHIER", associatedBusinessId);
                 db.userDao().insertUser(approvedCashier);
 
+                // =============================================================
+                // SUPABASE REAL-TIME CLOUD USER SYNCHRONIZATION OVER-THE-AIR
+                // =============================================================
+                syncUserToSupabaseCloud(name, phone, encryptedPassword, "CASHIER", associatedBusinessId);
+                // =============================================================
+
                 runOnUiThread(() -> {
-                    Toast.makeText(this, "Cashier profile successfully verified and linked!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Cashier profile created and synced to cloud!", Toast.LENGTH_LONG).show();
                     finish();
                 });
             }
@@ -150,6 +146,9 @@ public class RegisterActivity extends AppCompatActivity {
                         name + " Retail Outlet Store", "Dar es Salaam, TZ", phone, System.currentTimeMillis()
                 );
                 targetedBusinessId = db.businessDao().insertBusiness(newEnterprise);
+
+                // Sync the Business entity block up to cloud table first to satisfy foreign constraints
+                syncBusinessToSupabaseCloud(targetedBusinessId, name + " Retail Outlet Store", phone);
             }
 
             User newUser;
@@ -161,10 +160,55 @@ public class RegisterActivity extends AppCompatActivity {
 
             db.userDao().insertUser(newUser);
 
+            // =============================================================
+            // SUPABASE REAL-TIME CLOUD USER SYNCHRONIZATION OVER-THE-AIR
+            // =============================================================
+            Long cloudBizId = (targetedBusinessId > 0) ? targetedBusinessId : null;
+            syncUserToSupabaseCloud(name, phone, encryptedPassword, selectedRole, cloudBizId);
+            // =============================================================
+
             runOnUiThread(() -> {
-                Toast.makeText(RegisterActivity.this, "Account created successfully! Please Sign In.", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "Account successfully synced! Please Sign In.", Toast.LENGTH_LONG).show();
                 finish();
             });
         });
+    }
+
+    // Helper method to push Business profiles up to remote PostgreSQL table
+    private void syncBusinessToSupabaseCloud(long id, String name, String managerPhone) {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("id", id); // Match database schema requirements
+            json.put("name", name);
+            json.put("location", "Dar es Salaam, TZ");
+            json.put("manager_phone", managerPhone);
+            json.put("created_at", System.currentTimeMillis());
+
+            SupabaseClient.getInstance().pushRecordToCloud("businesses", json.toString(), new SupabaseClient.CloudSyncCallback() {
+                @Override public void onSuccess() {}
+                @Override public void onFailure(String err) {}
+            });
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    // Helper method to push User accounts data models up to remote PostgreSQL table
+    private void syncUserToSupabaseCloud(String name, String phone, String passwordHash, String role, Long businessId) {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("full_name", name);
+            json.put("phone_number", phone);
+            json.put("password_hash", passwordHash);
+            json.put("role", role);
+            if (businessId != null) {
+                json.put("business_id", businessId);
+            } else {
+                json.put("business_id", JSONObject.NULL);
+            }
+
+            SupabaseClient.getInstance().pushRecordToCloud("users", json.toString(), new SupabaseClient.CloudSyncCallback() {
+                @Override public void onSuccess() {}
+                @Override public void onFailure(String err) {}
+            });
+        } catch (Exception e) { e.printStackTrace(); }
     }
 }

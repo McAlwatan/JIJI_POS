@@ -54,6 +54,12 @@ dependencies {
     // offline QR code generator
     implementation("com.google.zxing:core:3.5.3")
 
+    // Retrofit REST Core Engines
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+// OkHttp Client Logger Pipeline
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
     //location
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
