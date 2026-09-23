@@ -29,7 +29,22 @@
                 android:textColor="@color/fv_ink"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="20dp"/>
+
+            <TextView
+                android:id="@+id/textRoleBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textWelcomeBanner"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_nav_active_pill"
+                android:backgroundTint="@color/teal_soft"
+                android:paddingVertical="4dp"
+                android:text="ROLE ACCOUNT"
+                android:textColor="@color/teal_light"
+                android:textSize="10sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/btnHeaderMenu"
@@ -46,8 +61,9 @@
 
         </RelativeLayout>
 
-        <!-- Dynamic Casing Selector Pill Row -->
+        <!-- Dynamic Casing Selector Pill Row (Wallet / Account) -->
         <LinearLayout
+            android:id="@+id/layoutDashboardToggles"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="@drawable/bg_navbar"
@@ -58,34 +74,40 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/textRoleTag"
+                android:id="@+id/toggleWallet"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_nav_active_pill"
-                android:backgroundTint="@color/fv_accent"
-                android:text="MANAGER"
-                android:textColor="@color/fv_on_accent"
+                android:backgroundTint="@color/teal_light"
+                android:text="Wallet"
+                android:textColor="@color/white"
                 android:textStyle="bold"
-                android:textSize="12sp"
-                android:gravity="center" />
+                android:textSize="13sp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true" />
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_help"
+                android:src="@android:drawable/ic_menu_sort_by_size"
                 app:tint="@color/fv_ink"
                 android:alpha="0.25"
-                android:layout_marginHorizontal="12dp" />
+                android:layout_marginHorizontal="12dp"
+                android:rotation="90" />
 
             <TextView
+                android:id="@+id/toggleAccount"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:text="Account Summary"
+                android:text="Account"
                 android:textColor="@color/fv_muted"
-                android:textSize="12sp"
-                android:gravity="center" />
+                android:textSize="13sp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
 
         <!-- Cumulative System Metrics Counter Monitoring Labels -->
@@ -94,18 +116,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1,400.00 TZS"
-            android:textColor="@color/fv_ink"
-            android:textSize="40sp"
+            android:textColor="@color/white"
+            android:textSize="48sp"
             android:textStyle="bold"
             android:gravity="center_horizontal"
             android:layout_marginTop="40dp" />
 
+        <!-- Live refresh loading indicator shown while the balance recomputes -->
+        <ProgressBar
+            android:id="@+id/balanceProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/teal_light"
+            android:visibility="gone" />
+
         <TextView
+            android:id="@+id/textBalanceSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Active Shift Sales Volume"
+            android:text="Wallet balance"
             android:textColor="@color/fv_muted"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:gravity="center_horizontal"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="24dp" />
@@ -119,13 +154,19 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Fairvest.TopRounded"
         app:cardElevation="0dp"
         app:strokeWidth="0dp"
-        android:backgroundTint="@color/fv_surface">
+        android:backgroundTint="@color/bg_dark">
 
-        <FrameLayout
-            android:id="@+id/fragmentContainer"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/dashboardSwipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp">
+
+            <FrameLayout
+                android:id="@+id/fragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -137,24 +178,24 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <LinearLayout android:id="@+id/tab1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
-            <ImageView android:id="@+id/icon1" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_home" app:tint="@color/fv_ink" android:alpha="0.55"/>
-            <TextView android:id="@+id/text1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home" android:textColor="@color/fv_ink" android:textSize="11sp" android:layout_marginTop="4dp"/>
+        <LinearLayout android:id="@+id/tab1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/icon1" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_home" app:tint="@color/white" android:alpha="0.55"/>
+            <TextView android:id="@+id/text1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp"/>
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/tab2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
-            <ImageView android:id="@+id/icon2" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_sales" app:tint="@color/fv_ink" android:alpha="0.55"/>
-            <TextView android:id="@+id/text2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sales" android:textColor="@color/fv_ink" android:textSize="11sp" android:layout_marginTop="4dp" android:visibility="visible"/>
+        <LinearLayout android:id="@+id/tab2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/icon2" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_scan" app:tint="@color/white" android:alpha="0.55"/>
+            <TextView android:id="@+id/text2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Scan" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp"/>
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/tab3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
-            <ImageView android:id="@+id/icon3" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_staff" app:tint="@color/fv_ink" android:alpha="0.55"/>
-            <TextView android:id="@+id/text3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Staff" android:textColor="@color/fv_ink" android:textSize="11sp" android:layout_marginTop="4dp" android:visibility="visible"/>
+        <LinearLayout android:id="@+id/tab3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/icon3" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_safe" app:tint="@color/white" android:alpha="0.55"/>
+            <TextView android:id="@+id/text3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Safe" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp"/>
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/tab4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
-            <ImageView android:id="@+id/icon4" android:layout_width="22dp" android:layout_height="22dp" android:src="@android:drawable/ic_menu_close_clear_cancel" app:tint="@color/fv_ink" android:alpha="0.55"/>
-            <TextView android:id="@+id/text4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Exit" android:textColor="@color/fv_ink" android:textSize="11sp" android:layout_marginTop="4dp"/>
+        <LinearLayout android:id="@+id/tab4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <ImageView android:id="@+id/icon4" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_nav_apps" app:tint="@color/white" android:alpha="0.55"/>
+            <TextView android:id="@+id/text4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="More" android:textColor="@color/white" android:textSize="11sp" android:layout_marginTop="4dp"/>
         </LinearLayout>
     </LinearLayout>
 

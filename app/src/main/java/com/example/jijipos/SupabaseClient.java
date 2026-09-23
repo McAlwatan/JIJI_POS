@@ -11,6 +11,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.io.IOException;
+
 public class SupabaseClient {
 
     private static final String BASE_URL = "https://vgrdweyrdakbcancumka.supabase.co/rest/v1/";
@@ -83,5 +85,50 @@ public class SupabaseClient {
                 callback.onFailure(t.getMessage());
             }
         });
+    }
+
+    /**
+     * Synchronously pulls the raw JSON array for a single user profile matched
+     * by phone number. MUST be called from a background thread (uses
+     * {@link Call#execute()}). Returns the response body string, or null when
+     * the server answered unsuccessfully.
+     */
+    public String fetchUserJsonByPhone(String phone) throws IOException {
+        Call<ResponseBody> call = supabaseApi.fetchUsersByPhone(
+                API_KEY, "Bearer " + API_KEY, "eq." + phone, 1);
+        Response<ResponseBody> response = call.execute();
+        if (response.isSuccessful() && response.body() != null) {
+            return response.body().string();
+        }
+        return null;
+    }
+
+    /**
+     * Synchronously pulls the raw JSON array for a single MANAGER profile matched
+     * by phone number, used to validate a cashier invitation code when the manager
+     * registered on a different device. MUST be called from a background thread.
+     */
+    public String fetchManagerJsonByPhone(String phone) throws IOException {
+        Call<ResponseBody> call = supabaseApi.fetchUsersByPhoneAndRole(
+                API_KEY, "Bearer " + API_KEY, "eq." + phone, "eq.MANAGER", 1);
+        Response<ResponseBody> response = call.execute();
+        if (response.isSuccessful() && response.body() != null) {
+            return response.body().string();
+        }
+        return null;
+    }
+
+    /**
+     * Synchronously pulls the raw JSON array for a single business by id.
+     * MUST be called from a background thread.
+     */
+    public String fetchBusinessJsonById(long businessId) throws IOException {
+        Call<ResponseBody> call = supabaseApi.fetchBusinessById(
+                API_KEY, "Bearer " + API_KEY, "eq." + businessId, 1);
+        Response<ResponseBody> response = call.execute();
+        if (response.isSuccessful() && response.body() != null) {
+            return response.body().string();
+        }
+        return null;
     }
 }

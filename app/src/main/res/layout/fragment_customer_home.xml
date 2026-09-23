@@ -21,258 +21,177 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fv_surface">
+    android:background="@color/bg_dark">
 
-    <!-- ========== Period chip selector ========== -->
-    <LinearLayout
-        android:id="@+id/chipRow"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/fv_chip_height"
-        android:orientation="horizontal"
-        android:layout_marginStart="@dimen/fv_screen_padding"
-        android:layout_marginEnd="@dimen/fv_screen_padding"
-        android:layout_marginTop="@dimen/fv_gap_md"
+    <!-- Floating QR Code circle in the center top -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardQrFloating"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        app:cardCornerRadius="43dp"
+        app:cardElevation="4dp"
+        app:strokeWidth="0dp"
+        android:backgroundTint="@color/card_dark"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="-43dp">
 
-        <TextView
-            android:id="@+id/chipToday"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <ImageView
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_chip_selected"
-            android:gravity="center"
-            android:text="Today"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="@color/white" />
+            android:padding="20dp"
+            android:src="@drawable/ic_qr_code_scan"
+            app:tint="@color/teal_light" />
+    </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/chipWeek"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_chip_unselected"
-            android:gravity="center"
-            android:text="Week"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_muted" />
-
-        <TextView
-            android:id="@+id/chipMonth"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_chip_unselected"
-            android:gravity="center"
-            android:text="Month"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_muted" />
-
-        <TextView
-            android:id="@+id/chipYear"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_chip_unselected"
-            android:gravity="center"
-            android:text="Year"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_muted" />
-    </LinearLayout>
-
-    <!-- ========== Spend amount ========== -->
-    <TextView
-        android:id="@+id/textSpendAmount"
-        android:layout_width="0dp"
+    <!-- Interactive Action Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/fv_gap_lg"
-        android:gravity="center"
-        android:text="TSh 0"
-        android:textColor="@color/fv_ink"
-        android:textSize="@dimen/fv_amount_text"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/chipRow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textSpendLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        android:text="Spent today"
-        android:textColor="@color/fv_muted"
-        android:textSize="13sp"
-        app:layout_constraintTop_toBottomOf="@id/textSpendAmount"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- ========== Spending trend graph card (Selcom-Pesa style) ==========
-         GONE by default — actionSpendingGraph toggles this AND moves
-         panelBackground's top anchor between this card and textSpendLabel. -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardGraphContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/fv_gap_md"
-        android:layout_marginStart="@dimen/fv_screen_padding"
-        android:layout_marginEnd="@dimen/fv_screen_padding"
-        android:visibility="gone"
-        app:cardBackgroundColor="@color/fv_stroke"
-        app:cardCornerRadius="@dimen/fv_graph_card_radius"
-        app:cardElevation="0dp"
-        app:strokeWidth="0dp"
-        app:layout_constraintTop_toBottomOf="@id/textSpendLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
+        <!-- Row 1 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="18dp">
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/actionMyReceipts"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Spending trend"
-                android:textColor="@color/fv_ink"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:layout_marginBottom="12dp" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingVertical="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
 
-            <!-- Custom view — bar/line rendering, colors and data points
-                 are set programmatically by CustomerHomeFragment
-                 (customerSpendingGraph.setData(...)). If you share
-                 LineGraphView.java I can theme its stroke/fill colors to
-                 match this palette (fv_accent line, fv_light_stroke grid). -->
-            <com.example.jijipos.LineGraphView
-                android:id="@+id/customerSpendingGraph"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fv_graph_height" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_nav_safe"
+                    app:tint="@color/teal_light" />
 
-    <!-- ========== Rounded panel behind the quick-actions row ==========
-         Height is driven purely by its top constraint, which the fragment
-         swaps at runtime — no fixed height needed here. -->
-    <View
-        android:id="@+id/panelBackground"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_fv_panel_top"
-        app:layout_constraintTop_toBottomOf="@id/textSpendLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="My Receipts"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
-    <!-- ========== Quick actions row ========== -->
-    <LinearLayout
-        android:id="@+id/actionsRow"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/fv_gap_lg"
-        android:layout_marginStart="@dimen/fv_screen_padding"
-        android:layout_marginEnd="@dimen/fv_screen_padding"
-        app:layout_constraintTop_toTopOf="@id/panelBackground"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/divider" />
 
-        <LinearLayout
-            android:id="@+id/btnScanQr"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless">
-
-            <ImageView
-                android:layout_width="@dimen/fv_action_icon_size"
-                android:layout_height="@dimen/fv_action_icon_size"
-                android:background="@drawable/bg_fv_icon_circle"
-                android:src="@android:drawable/ic_menu_camera"
-                app:tint="@color/fv_ink"
-                android:padding="16dp"
-                android:scaleType="fitCenter" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/actionSpendingGraph"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Scan QR"
-                android:textColor="@color/fv_ink"
-                android:textSize="12sp" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingVertical="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_chart"
+                    app:tint="@color/teal_light" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Spending Graph"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+            </LinearLayout>
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider" />
+
+        <!-- Row 2 -->
         <LinearLayout
-            android:id="@+id/actionMyReceipts"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="@dimen/fv_action_icon_size"
-                android:layout_height="@dimen/fv_action_icon_size"
-                android:background="@drawable/bg_fv_icon_circle"
-                android:src="@android:drawable/ic_menu_agenda"
-                app:tint="@color/fv_ink"
-                android:padding="16dp"
-                android:scaleType="fitCenter" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/actionCategoriesBudget"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="My Receipts"
-                android:textColor="@color/fv_ink"
-                android:textSize="12sp" />
-        </LinearLayout>
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingVertical="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
 
-        <LinearLayout
-            android:id="@+id/actionSpendingGraph"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_category"
+                    app:tint="@color/teal_light" />
 
-            <ImageView
-                android:layout_width="@dimen/fv_action_icon_size"
-                android:layout_height="@dimen/fv_action_icon_size"
-                android:background="@drawable/bg_fv_icon_circle"
-                android:src="@android:drawable/ic_menu_sort_by_size"
-                app:tint="@color/fv_ink"
-                android:padding="16dp"
-                android:scaleType="fitCenter" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Categories"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:id="@+id/actionSplitBill"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Spending"
-                android:textColor="@color/fv_ink"
-                android:textSize="12sp" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingVertical="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_split"
+                    app:tint="@color/teal_light" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Split Bill"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

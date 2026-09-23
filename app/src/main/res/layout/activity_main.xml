@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/gradient_background"
+    android:background="@color/fv_bg"
+    android:gravity="center"
     android:orientation="vertical"
-    android:padding="40dp"
-    >
+    tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/splashLogo"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_logo_splash" />
+
+    <TextView
+        android:id="@+id/splashAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:letterSpacing="0.12"
+        android:text="@string/app_name"
+        android:textColor="@color/fv_ink"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/splashTagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Pay and sell them your way"
+        android:textColor="@color/fv_muted"
+        android:textSize="14sp" />
 
 </LinearLayout>

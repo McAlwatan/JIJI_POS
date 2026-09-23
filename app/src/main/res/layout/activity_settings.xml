@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    res/layout/activity_settings.xml
+    Every id kept exact (btnSettingsBack, rowSettingsProfile,
+    textSettingsInitials, textSettingsName, textSettingsRole,
+    inputCurrentPassword, inputNewPassword, inputConfirmPassword,
+    btnSavePassword, rowSettingsPin, textSettingsPinState,
+    btnSettingsLogout) — no Java changes needed.
+
+    What changed from the version you sent: the surrounding chrome was on
+    an unrelated palette (teal, card_dark, orange_soft/accent_orange, a
+    generic bg_nav_active_pill) that never appears anywhere else in the
+    app — that mismatch is what read as "AI-generated." Swapped every one
+    of those for the real fv_* tokens (fv_chip_accent instead of teal,
+    fv_orange instead of accent_orange, fv_stroke instead of card_dark),
+    and fixed the MaterialCardView background bug (android:backgroundTint
+    doesn't reliably fill a MaterialCardView — same bug from the dashboard
+    tray earlier; app:cardBackgroundColor is correct). The password form
+    already used Fairvest.TextInput/Button correctly — untouched.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fv_bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/fv_screen_padding">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/fv_gap_lg">
+
+            <ImageButton
+                android:id="@+id/btnSettingsBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_arrow_back"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/fv_ink"
+                android:contentDescription="Back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:textColor="@color/fv_ink"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+
+        <!-- Profile shortcut row -->
+        <LinearLayout
+            android:id="@+id/rowSettingsProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_fv_row"
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="@dimen/fv_gap_lg">
+
+            <FrameLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_fv_avatar_circle">
+
+                <TextView
+                    android:id="@+id/textSettingsInitials"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="U"
+                    android:textColor="@color/fv_ink"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="14dp">
+
+                <TextView
+                    android:id="@+id/textSettingsName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User"
+                    android:textColor="@color/fv_ink"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textSettingsRole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View profile"
+                    android:textColor="@color/fv_muted"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/fv_muted"
+                android:contentDescription="Open profile" />
+        </LinearLayout>
+
+        <!-- Change Password card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="@color/fv_stroke">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_shield_lock"
+                        app:tint="@color/fv_chip_accent"
+                        android:contentDescription="Security" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CHANGE PASSWORD"
+                        android:textColor="@color/fv_ink"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Fairvest.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Current password"
+                    app:passwordToggleEnabled="true"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputCurrentPassword"
+                        style="@style/Fairvest.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Fairvest.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="New password"
+                    app:passwordToggleEnabled="true"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputNewPassword"
+                        style="@style/Fairvest.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Fairvest.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirm new password"
+                    app:passwordToggleEnabled="true"
+                    android:layout_marginBottom="18dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputConfirmPassword"
+                        style="@style/Fairvest.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSavePassword"
+                    style="@style/Fairvest.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fv_button_height"
+                    android:text="Update Password" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- App PIN row -->
+        <LinearLayout
+            android:id="@+id/rowSettingsPin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_fv_row"
+            android:padding="18dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="@dimen/fv_gap_md">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_nav_safe"
+                app:tint="@color/fv_chip_accent"
+                android:contentDescription="PIN" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="App Access PIN"
+                    android:textColor="@color/fv_ink"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textSettingsPinState"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change the 4-digit quick-access PIN"
+                    android:textColor="@color/fv_muted"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/fv_muted"
+                android:contentDescription="Change PIN" />
+        </LinearLayout>
+
+        <!-- Logout -->
+        <TextView
+            android:id="@+id/btnSettingsLogout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:background="@drawable/bg_fv_logout_pil"
+            android:drawableStart="@drawable/ic_logout"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/fv_orange"
+            android:text="LOG OUT"
+            android:textColor="@color/fv_orange"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:paddingHorizontal="24dp"
+            android:layout_marginTop="@dimen/fv_gap_lg"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+</ScrollView>

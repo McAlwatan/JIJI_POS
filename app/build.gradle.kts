@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -37,6 +38,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.material)
     implementation(libs.swiperefreshlayout)
+    implementation("androidx.biometric:biometric:1.2.0-alpha05")
 
     val cameraxVersion = "1.4.0"
     implementation("androidx.camera:camera-core:$cameraxVersion")
@@ -50,6 +52,11 @@ dependencies {
 
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
+
+    // Firebase (phone-number OTP verification)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation("com.google.firebase:firebase-analytics")
 
     // offline QR code generator
     implementation("com.google.zxing:core:3.5.3")

@@ -1,6 +1,8 @@
 package com.example.jijipos;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -9,9 +11,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.jijipos.database.AppDatabase;
+import com.example.jijipos.database.entity.Business;
 import com.example.jijipos.database.entity.User;
 import com.example.jijipos.repository.UserRepository;
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText inputPhone, inputPassword;
@@ -59,7 +68,9 @@ public class LoginActivity extends AppCompatActivity {
         userRepository.getUserByPhone(phone, user -> {
             runOnUiThread(() -> {
                 if(user == null){
-                    Toast.makeText(LoginActivity.this, "User record profile not found!", Toast.LENGTH_SHORT).show();
+                    // Not on this device yet: fall back to the cloud so an
+                    // account registered elsewhere can still sign in online.
+                    attemptCloudLogin(phone, encryptedInputPassword);
                     return;
                 }
 
@@ -73,22 +84,109 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Online login fallback. When the profile is absent from the local Room DB
+     * (e.g. a fresh device), pull it from Supabase, verify the password hash,
+     * cache the profile locally and continue into the normal routing.
+     */
+    private void attemptCloudLogin(String phone, String encryptedInputPassword) {
+        Toast.makeText(this, "Checking your online profile...", Toast.LENGTH_SHORT).show();
+        buttonLogin.setEnabled(false);
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                String json = SupabaseClient.getInstance().fetchUserJsonByPhone(phone);
+                JSONArray array = (json != null) ? new JSONArray(json) : new JSONArray();
+
+                if (array.length() == 0) {
+                    runOnUiThread(() -> {
+                        buttonLogin.setEnabled(true);
+                        Toast.makeText(this, "No account found for this phone number", Toast.LENGTH_LONG).show();
+                    });
+                    return;
+                }
+
+                JSONObject obj = array.getJSONObject(0);
+                String cloudHash = obj.optString("password_hash");
+                if (!encryptedInputPassword.equals(cloudHash)) {
+                    runOnUiThread(() -> {
+                        buttonLogin.setEnabled(true);
+                        Toast.makeText(this, "Invalid credential mismatch", Toast.LENGTH_LONG).show();
+                    });
+                    return;
+                }
+
+                String name = obj.optString("full_name");
+                String role = obj.optString("role", "CUSTOMER");
+                Long businessId = obj.isNull("business_id") ? null : obj.optLong("business_id");
+
+                AppDatabase db = AppDatabase.getInstance(this);
+
+                // Preserve the manager/cashier business linkage by mirroring the
+                // cloud business row locally first (avoids a foreign-key failure).
+                Long localBusinessId = null;
+                if (businessId != null && businessId > 0) {
+                    Business existing = db.businessDao().getBusinessById(businessId);
+                    if (existing != null) {
+                        localBusinessId = businessId;
+                    } else {
+                        String bJson = SupabaseClient.getInstance().fetchBusinessJsonById(businessId);
+                        JSONArray bArray = (bJson != null) ? new JSONArray(bJson) : new JSONArray();
+                        if (bArray.length() > 0) {
+                            JSONObject bObj = bArray.getJSONObject(0);
+                            Business business = new Business(
+                                    bObj.optString("name"),
+                                    bObj.optString("location"),
+                                    bObj.optString("manager_phone"),
+                                    bObj.optLong("created_at", System.currentTimeMillis()));
+                            business.setId(businessId);
+                            db.businessDao().insertBusiness(business);
+                            localBusinessId = businessId;
+                        }
+                    }
+                }
+
+                User cloudUser = new User(name, phone, cloudHash, role, localBusinessId);
+                long newId = db.userDao().insertUser(cloudUser);
+                User saved = db.userDao().getUserById(newId);
+
+                runOnUiThread(() -> {
+                    buttonLogin.setEnabled(true);
+                    if (saved != null) {
+                        Toast.makeText(this, "Profile synced to this device. Welcome " + saved.getFullName(), Toast.LENGTH_LONG).show();
+                        routeUserToDashboard(saved);
+                    } else {
+                        Toast.makeText(this, "Could not save the synced profile", Toast.LENGTH_LONG).show();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    buttonLogin.setEnabled(true);
+                    Toast.makeText(this, "Could not reach the cloud. Check your connection and try again.", Toast.LENGTH_LONG).show();
+                });
+            }
+        });
+    }
+
     private void routeUserToDashboard(User user) {
         String role = user.getRole();
         if (role == null) role = "CUSTOMER";
+        role = role.trim().toUpperCase();
 
-        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+        // Cache the full session so every downstream screen (PIN lock, PIN
+        // setup, dashboard, staff list, reports) reads one source of truth
+        SessionManager.saveSession(this, user.getId(), user.getFullName(), user.getPhoneNumber(),
+                role, (user.getBusinessId() != null) ? user.getBusinessId() : 0L);
 
-        // SECURE SESSION EXTRA CARRIER KEYS PASS-THROUGH
-        intent.putExtra("USER_ID", user.getId());              // Explicit unique User ID profile tag
-        intent.putExtra("USER_NAME", user.getFullName());
-        intent.putExtra("USER_ROLE", role.trim().toUpperCase());
-        intent.putExtra("USER_PHONE", user.getPhoneNumber());
+        if (SessionManager.hasPin(this)) {
+            Intent intent = new Intent(LoginActivity.this, PinLockActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
-        // Pass the actual business relation link (Use default 0L fallback for standalone customers)
-        long bizId = (user.getBusinessId() != null) ? user.getBusinessId() : 0L;
-        intent.putExtra("BUSINESS_ID", bizId);
-
+        Intent intent = SessionManager.attachSession(this, new Intent(LoginActivity.this, PinSetupActivity.class));
         startActivity(intent);
         finish();
     }

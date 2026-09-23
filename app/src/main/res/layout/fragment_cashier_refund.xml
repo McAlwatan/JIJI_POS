@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_dark"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Process Refund"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Receipt ID to initiate a return"
+        android:textColor="@color/fv_muted"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Fairvest.TextInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Receipt ID"
+        android:layout_marginTop="32dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputRefundReceiptId"
+            style="@style/Fairvest.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFindReceipt"
+        style="@style/Fairvest.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fv_button_height"
+        android:text="Find Receipt"
+        android:layout_marginTop="24dp" />
+
+    <LinearLayout
+        android:id="@+id/layoutRefundDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:id="@+id/textRefundInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Receipt # -- | Total: --"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmRefund"
+            style="@style/Fairvest.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fv_button_height"
+            android:text="Confirm Refund"
+            app:backgroundTint="@color/red"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+
+</LinearLayout>

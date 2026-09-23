@@ -14,10 +14,16 @@ import java.util.Locale;
 
 public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHolder> {
 
-    private final List<Transaction> transactionList;
+    public interface OnReceiptClickListener {
+        void onReceiptClick(Transaction transaction);
+    }
 
-    public ReceiptAdapter(List<Transaction> transactionList) {
+    private final List<Transaction> transactionList;
+    private final OnReceiptClickListener listener;
+
+    public ReceiptAdapter(List<Transaction> transactionList, OnReceiptClickListener listener) {
         this.transactionList = transactionList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -31,10 +37,9 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Transaction transaction = transactionList.get(position);
 
-        // FIX: Extract the descriptor name directly from the transaction. If category contains the string name, load it.
         String displayTitle = transaction.getCategory();
         if (displayTitle == null || displayTitle.trim().isEmpty() || displayTitle.equalsIgnoreCase("Shopping")) {
-            displayTitle = "Scanned Digital Invoice"; // High-end premium default fallback tracking string
+            displayTitle = "Scanned Digital Invoice";
         }
 
         holder.textTitle.setText(displayTitle);
@@ -42,6 +47,10 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         holder.textDate.setText(sdf.format(new Date(transaction.getTimestamp())));
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onReceiptClick(transaction);
+        });
     }
 
 

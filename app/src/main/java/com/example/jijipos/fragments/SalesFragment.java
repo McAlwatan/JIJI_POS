@@ -161,6 +161,8 @@ public class SalesFragment extends Fragment {
             // Return to UI thread to compile and pop open the checkout QR barcode image
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
+                    // Push the freshly saved sale into the header total in real time
+                    notifyDashboardBalanceChanged();
                     try {
                         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()); //
                         String formattedDateString = dateFormatter.format(new Date(currentUnixTime)); //
@@ -188,6 +190,13 @@ public class SalesFragment extends Fragment {
                 });
             }
         });
+    }
+
+    // Tells the host dashboard to re-read and animate the header balance now
+    private void notifyDashboardBalanceChanged() {
+        if (getActivity() instanceof com.example.jijipos.DashboardActivity) {
+            ((com.example.jijipos.DashboardActivity) getActivity()).refreshHeaderBalance(true);
+        }
     }
 
     // Mathematical matrix layout generation function mapping string bytes down into black/white pixels arrays

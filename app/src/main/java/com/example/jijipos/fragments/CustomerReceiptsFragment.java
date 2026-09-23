@@ -78,7 +78,13 @@ public class CustomerReceiptsFragment extends Fragment {
                         textNoReceiptsHint.setVisibility(View.GONE);
                         recyclerViewReceipts.setVisibility(View.VISIBLE);
 
-                        ReceiptAdapter adapter = new ReceiptAdapter(savedReceipts);
+                        ReceiptAdapter adapter = new ReceiptAdapter(savedReceipts, transaction -> {
+                            // Navigate to Receipt Detail Fragment
+                            getParentFragmentManager().beginTransaction()
+                                    .replace(R.id.fragmentContainer, new ReceiptDetailFragment(transaction))
+                                    .addToBackStack(null)
+                                    .commit();
+                        });
                         recyclerViewReceipts.setAdapter(adapter);
                     }
                 });

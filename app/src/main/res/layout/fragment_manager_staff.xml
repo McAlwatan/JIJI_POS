@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/bg_dark"
     android:padding="24dp">
 
     <!-- Header Section -->
@@ -17,12 +18,12 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@android:drawable/ic_menu_my_calendar"
-            app:tint="#111111" />
+            app:tint="@color/teal_light" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Staff Management Portal"
-            android:textColor="#111111"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginStart="8dp" />
@@ -79,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Active Employee Cashiers"
-        android:textColor="#111111"
+        android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
         android:layout_marginBottom="12dp" />
@@ -89,6 +90,7 @@
         android:id="@+id/recyclerViewStaff"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layoutAnimation="@anim/layout_fall_down"
         android:scrollbars="vertical" />
 
 </LinearLayout>

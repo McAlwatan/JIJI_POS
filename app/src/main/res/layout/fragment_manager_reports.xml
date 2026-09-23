@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_dark"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Business Reports"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Export your business performance data"
+        android:textColor="@color/fv_muted"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp" />
+
+    <!-- Placeholder for report export button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnExportPdf"
+        style="@style/Fairvest.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fv_button_height"
+        android:text="Export Monthly PDF Report"
+        android:layout_marginTop="40dp" />
+
+</LinearLayout>

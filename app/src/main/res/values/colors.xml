@@ -1,16 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+
+    <!-- ============================================================
+         SHARED — referenced directly by Java, not just XML. Never
+         rename or remove without also updating the matching code:
+           - R.color.white / R.color.text_muted are read in
+             CustomerHomeFragment.java's chip-selection logic.
+         ============================================================ -->
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#E53E3E</color>
+    <color name="black">#FF000000</color>
+    <color name="text_muted">#9E9E9E</color>
+
+
+    <!-- ============================================================
+         FAIRVEST DESIGN SYSTEM (fv_*) — the current standard. Every
+         new screen should build from these, not the legacy section
+         below.
+         ============================================================ -->
+    <color name="fv_bg">#0A0A0A</color>          <!-- screen background -->
+    <color name="fv_surface">#151515</color>     <!-- inputs, social buttons -->
+    <color name="fv_stroke">#272727</color>      <!-- idle borders, elevated card/row fill -->
+    <color name="fv_ink">#FFFFFF</color>         <!-- primary text -->
+    <color name="fv_muted">#9B9B9B</color>       <!-- secondary text, hints -->
+    <color name="fv_accent">#C6DCE6</color>      <!-- pale blue: primary action -->
+    <color name="fv_on_accent">#0A0A0A</color>   <!-- text on pale blue -->
+    <color name="fv_gold">#D9B14C</color>
+    <color name="fv_orange">#F05A28</color>
+    <color name="fv_orange_soft">#1FF05A28</color> <!-- translucent fv_orange — destructive rows (Logout) -->
+    <color name="fv_ripple">#22C6DCE6</color>
+
+    <!-- Solid accent used for selected chips AND the trend-graph line —
+         unlike fv_accent (very pale, meant to pair with DARK text), this
+         is saturated enough that hardcoded WHITE text (set in Java)
+         stays readable on any dark surface. Also used for icon tints
+         (Settings/Profile) that want the same accent identity. -->
+    <color name="fv_chip_accent">#2F6FED</color>
+
+    <!-- Light-surface tokens: kept in reserve for any future white-card
+         element (e.g. the QR display), NOT the default theme — every
+         screen so far uses the dark fv_* tokens above. -->
+    <color name="fv_light_ink">#111111</color>
+    <color name="fv_light_muted">#6E6E6E</color>
+    <color name="fv_light_surface">#F3F3F3</color>
+    <color name="fv_light_stroke">#E7E7E7</color>
+    <color name="fv_dark_pill">#171717</color>   <!-- unused now that chips use fv_chip_accent -->
+
+
+    <!-- ============================================================
+         LEGACY — PRE-FAIRVEST PALETTE. Being phased out screen by
+         screen; do not use these in anything new. Known status as of
+         this update:
+           - divider     : still used by fragment_manager_home.xml
+                           (not yet restyled)
+           - everything else below is not referenced by any screen
+             I've restyled so far, but I haven't seen every file in
+             your project (activity_welcome.xml, activity_main.xml,
+             dialog_receipt_success.xml, item_receipt_history.xml,
+             fragment_manager_staff.xml, fragment_manager_inventory.xml
+             use literal hex, not these names, from what you've sent —
+             but there may be others). Send me those and I can confirm
+             which of these are safe to delete outright.
+         ============================================================ -->
     <color name="light_black">#1A1A1A</color>
     <color name="bg_dark">#0D0D0D</color>
     <color name="card_dark">#1C1C1E</color>
     <color name="input_bg">#2A2A2C</color>
     <color name="teal_primary">#1F8A6E</color>
     <color name="teal_light">#3DBFA0</color>
-    <color name="text_muted">#9E9E9E</color>
     <color name="divider">#333333</color>
+    <color name="red">#E53E3E</color>
     <color name="redish">#AD0006</color>
     <color name="red_light">#FF6B6B</color>
     <color name="surface_elevated">#221F21</color>
@@ -20,20 +78,5 @@
     <color name="light_orange">#FFD285</color>
     <color name="light_cyan">#D1FAFA</color>
     <color name="nav_inactive">#7A7A7C</color>
-    <color name="fv_bg">#0A0A0A</color>          <!-- screen background -->
-    <color name="fv_surface">#151515</color>     <!-- inputs, social buttons -->
-    <color name="fv_stroke">#272727</color>      <!-- idle borders, dividers -->
-    <color name="fv_ink">#FFFFFF</color>         <!-- primary text -->
-    <color name="fv_muted">#9B9B9B</color>       <!-- secondary text, hints -->
-    <color name="fv_accent">#C6DCE6</color>      <!-- pale blue: primary action -->
-    <color name="fv_on_accent">#0A0A0A</color>   <!-- text on pale blue -->
-    <color name="fv_gold">#D9B14C</color>
-    <color name="fv_orange">#F05A28</color>
-    <color name="fv_ripple">#22C6DCE6</color>
-    <color name="fv_chip_accent">#2F6FED</color>
-    <color name="fv_light_ink">#111111</color>       <!-- primary text on white -->
-    <color name="fv_light_muted">#6E6E6E</color>     <!-- secondary text on white -->
-    <color name="fv_light_surface">#F3F3F3</color>   <!-- unselected chip / icon circle fill on white -->
-    <color name="fv_light_stroke">#E7E7E7</color>    <!-- hairline borders on white -->
-    <color name="fv_dark_pill">#171717</color>       <!-- unused now that chips use fv_chip_accent -->
-    </resources>
+
+</resources>

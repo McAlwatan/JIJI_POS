@@ -206,10 +206,10 @@ public class CustomerScanFragment extends Fragment {
                     Button btnCancel = dialogView.findViewById(R.id.dialogButtonCancel);
                     Button btnSave = dialogView.findViewById(R.id.dialogButtonSave);
 
-                    dName.setText("🛒 Item: " + itemName);
+                    dName.setText("Item: " + itemName);
                     dPrice.setText("Amount: " + itemPrice);
-                    dLoc.setText("📍 Location: " + location);
-                    dDate.setText("📅 Date: " + readableDate);
+                    dLoc.setText("Location: " + location);
+                    dDate.setText("Date: " + readableDate);
 
                     // 4. Set up interactive buttons workflows
                     btnCancel.setOnClickListener(v -> {
@@ -267,6 +267,8 @@ public class CustomerScanFragment extends Fragment {
                                 // 4. ONLY AFTER A SUCCESSFUL WRITE: Bounce back to Main Thread to close frames and display completion indicators
                                 if (getActivity() != null) {
                                     getActivity().runOnUiThread(() -> {
+                                        // Reflect the newly saved receipt in the header total immediately
+                                        notifyDashboardBalanceChanged();
                                         Toast.makeText(getContext(), "Receipt successfully pinned to history ledger!", Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
                                         resetScannerState(); // Re-activate camera streams
@@ -304,6 +306,13 @@ public class CustomerScanFragment extends Fragment {
         }
     }
 
+
+    // Tells the host dashboard to re-read and animate the header balance now
+    private void notifyDashboardBalanceChanged() {
+        if (getActivity() instanceof com.example.jijipos.DashboardActivity) {
+            ((com.example.jijipos.DashboardActivity) getActivity()).refreshHeaderBalance(true);
+        }
+    }
 
     private void resetScannerState() {
         isScanThrottled = false;

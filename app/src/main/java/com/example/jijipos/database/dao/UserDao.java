@@ -37,4 +37,7 @@ public interface UserDao {
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
     com.example.jijipos.database.entity.User getUserById(long id);
 
+    @Query("UPDATE users SET passwordHash = :newPasswordHash WHERE id = :userId")
+    void updatePassword(long userId, String newPasswordHash);
+
 }

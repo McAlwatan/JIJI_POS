@@ -284,5 +284,113 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <!-- ========== OTP Verification Overlay Sheet Panel ========== -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardOtpOverlay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="12dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/divider"
+            android:backgroundTint="@color/card_dark"
+            android:layout_marginHorizontal="24dp"
+            app:layout_constraintWidth_max="@dimen/fv_content_max_width"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="28dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SECURITY VERIFICATION"
+                    android:drawableStart="@drawable/ic_shield_lock"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/teal_light"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/teal_light"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.06" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Confirm Phone Number"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp" />
+
+                <TextView
+                    android:id="@+id/textOtpSubLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="We have simulated sending a 6-digit confirmation code code to your phone lines."
+                    android:textColor="@color/text_muted"
+                    android:textSize="13sp"
+                    android:gravity="center"
+                    android:layout_marginTop="8dp" />
+
+                <!-- OTP Input Field wrapped cleanly -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Fairvest.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter 6-Digit OTP"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputOtpCode"
+                        style="@style/Fairvest.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:gravity="center"
+                        android:letterSpacing="0.4"
+                        android:textSize="18sp"
+                        android:maxLength="6" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/textOtpCountdown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Resend code in 00:30"
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="24dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonOtpVerifySubmit"
+                    style="@style/Fairvest.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fv_button_height"
+                    android:text="Verify &amp; Create Account" />
+
+                <TextView
+                    android:id="@+id/textOtpCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:textColor="@color/red_light"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

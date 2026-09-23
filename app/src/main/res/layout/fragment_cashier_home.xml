@@ -1,144 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    res/layout/fragment_cashier_home.xml
-    Same structure and every id you already have — only colors/drawables
-    changed. This screen sits inside DashboardActivity's WHITE tray, so
-    every android:color/white text color below has been swapped for
-    fv_light_ink (it was rendering invisible before this fix).
-
-    Drawable swaps:
-      @drawable/bg_panel_top_rounded -> @drawable/bg_fv_panel_top   (already exists, same as Customer)
-      @drawable/bg_fab_circle        -> @drawable/bg_fv_fab_circle  (new, pale-blue accent)
-    If bg_panel_top_rounded / bg_fab_circle were custom assets you already
-    had elsewhere with different visuals, tell me and I'll point back to
-    them instead — I swapped to keep everything on one consistent system.
-
-    ic_receipt, ic_nav_inventory, ic_nav_staff and PeriodChip (the shared
-    chip style) are assumed to already exist in your project — untouched.
--->
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fv_surface"
-    android:fillViewport="true">
+    android:background="@color/bg_dark">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Floating Action Button Style Circle in the center top -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardFabCenter"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        app:cardCornerRadius="43dp"
+        app:cardElevation="4dp"
+        app:strokeWidth="0dp"
+        android:backgroundTint="@color/card_dark"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="-43dp">
+
+        <ImageView
+            android:id="@+id/imgCenterIcon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            android:src="@drawable/ic_nav_sales"
+            app:tint="@color/teal_light" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Cashier 2x2 Grid -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <HorizontalScrollView
-            android:id="@+id/scrollChips"
+        <!-- Row 1 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:paddingHorizontal="@dimen/fv_screen_padding"
-            android:layout_marginTop="@dimen/fv_gap_md"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/btnNewSale"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingVertical="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_nav_sales"
+                    app:tint="@color/teal_light" />
 
                 <TextView
-                    android:id="@+id/chipToday"
-                    style="@style/PeriodChip"
-                    android:background="@drawable/bg_chip_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="New Sale"
                     android:textColor="@color/white"
-                    android:text="Today" />
-
-                <TextView
-                    android:id="@+id/chipWeek"
-                    style="@style/PeriodChip"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_chip_unselected"
-                    android:textColor="@color/text_muted"
-                    android:text="Week" />
-
-                <TextView
-                    android:id="@+id/chipMonth"
-                    style="@style/PeriodChip"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_chip_unselected"
-                    android:textColor="@color/text_muted"
-                    android:text="Month" />
-
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
             </LinearLayout>
-        </HorizontalScrollView>
 
-        <TextView
-            android:id="@+id/textSalesAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:layout_marginStart="@dimen/fv_screen_padding"
-            android:text="TSh 248,000"
-            android:textColor="@color/fv_ink"
-            android:textSize="@dimen/fv_amount_text"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/scrollChips"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textSalesLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="@dimen/fv_screen_padding"
-            android:layout_marginBottom="40dp"
-            android:text="Total Sales Today"
-            android:textColor="@color/fv_muted"
-            android:textSize="13sp"
-            app:layout_constraintTop_toBottomOf="@id/textSalesAmount"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <View
-            android:id="@+id/panelBackground"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/bg_fv_panel_top"
-            app:layout_constraintTop_toBottomOf="@id/textSalesLabel"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <ImageButton
-            android:id="@+id/btnNewSale"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="-28dp"
-            android:background="@drawable/bg_fv_fab_circle"
-            android:elevation="4dp"
-            android:padding="14dp"
-            android:src="@drawable/ic_nav_sales"
-            android:contentDescription="New Sale"
-            app:tint="@color/fv_on_accent"
-            app:layout_constraintTop_toTopOf="@id/panelBackground"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="New Sale"
-            android:textColor="@color/fv_muted"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/btnNewSale"
-            app:layout_constraintStart_toStartOf="@id/btnNewSale"
-            app:layout_constraintEnd_toEndOf="@id/btnNewSale" />
-
-        <LinearLayout
-            android:id="@+id/gridRow1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="@id/panelBackground"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/divider" />
 
             <LinearLayout
                 android:id="@+id/actionHistory"
@@ -147,111 +82,71 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:paddingVertical="18dp"
+                android:paddingVertical="32dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackgroundBorderless">
+                android:background="?attr/selectableItemBackground">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:src="@drawable/ic_receipt"
-                    app:tint="@color/fv_ink" />
+                    app:tint="@color/teal_light" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Recent Sales"
-                    android:textColor="@color/fv_ink"
-                    android:textSize="13sp" />
+                    android:layout_marginTop="12dp"
+                    android:text="Transactions"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
             </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/fv_stroke" />
-
-            <LinearLayout
-                android:id="@+id/actionInventory"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:paddingVertical="18dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackgroundBorderless">
-
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:src="@drawable/ic_nav_inventory"
-                    app:tint="@color/fv_ink" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Stock Check"
-                    android:textColor="@color/fv_ink"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
         </LinearLayout>
 
         <View
-            android:id="@+id/gridDivider"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/fv_stroke"
-            app:layout_constraintTop_toBottomOf="@id/gridRow1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:background="@color/divider" />
 
+        <!-- Row 2 -->
         <LinearLayout
-            android:id="@+id/gridRow2"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/gridDivider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/actionRegisterCustomer"
+                android:id="@+id/actionRefund"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:paddingVertical="18dp"
+                android:paddingVertical="32dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackgroundBorderless">
+                android:background="?attr/selectableItemBackground">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:src="@drawable/ic_nav_staff"
-                    app:tint="@color/fv_ink" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@android:drawable/ic_menu_revert"
+                    app:tint="@color/teal_light" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Add Customer"
-                    android:textColor="@color/fv_ink"
-                    android:textSize="13sp" />
+                    android:layout_marginTop="12dp"
+                    android:text="Refund"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/fv_stroke" />
+                android:background="@color/divider" />
 
             <LinearLayout
                 android:id="@+id/actionSyncQueue"
@@ -260,28 +155,28 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:paddingVertical="18dp"
+                android:paddingVertical="32dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackgroundBorderless">
+                android:background="?attr/selectableItemBackground">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:src="@android:drawable/stat_notify_sync"
-                    app:tint="@color/fv_ink" />
+                    app:tint="@color/teal_light" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="12dp"
                     android:text="Sync Queue"
-                    android:textColor="@color/fv_ink"
-                    android:textSize="13sp" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
             </LinearLayout>
-
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

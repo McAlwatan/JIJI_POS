@@ -35,6 +35,9 @@ public interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE customerId = :customerId ORDER BY timestamp DESC")
     List<Transaction> getReceiptHistoryByCustomer(long customerId);
 
+    @Query("SELECT * FROM transactions WHERE cashierId = :cashierId ORDER BY timestamp DESC")
+    List<Transaction> getTransactionsByCashier(long cashierId);
+
     // Place this directly inside your TransactionDao.java interface source file
     @Query("SELECT SUM(totalAmount) FROM transactions WHERE customerId = :customerId AND timestamp >= :startTime AND timestamp <= :endTime")
     Double getCustomerExpensesSum(long customerId, long startTime, long endTime);
@@ -77,6 +80,50 @@ public interface TransactionDao {
             "AND timestamp BETWEEN :startTime AND :endTime " +
             "GROUP BY bucketLabel ORDER BY bucketLabel ASC")
     List<SpendBucket> getCustomerSpendByMonth(long customerId, long startTime, long endTime);
+
+    // ===================== CASHIER PERFORMANCE REPORTS =====================
+    // Power the manager drill-down and the cashier's own Day/Week/Month/Year
+    // report screen. Refunded sales are excluded so totals match what the
+    // dashboard headers already show.
+
+    @Query("SELECT SUM(totalAmount) AS totalSales, COUNT(*) AS saleCount FROM transactions " +
+            "WHERE cashierId = :cashierId AND isRefunded = 0 " +
+            "AND timestamp BETWEEN :startTime AND :endTime")
+    SalesStats getCashierSalesStats(long cashierId, long startTime, long endTime);
+
+    @Query("SELECT * FROM transactions WHERE cashierId = :cashierId AND isRefunded = 0 " +
+            "AND timestamp BETWEEN :startTime AND :endTime ORDER BY timestamp DESC")
+    List<Transaction> getTransactionsByCashierInRange(long cashierId, long startTime, long endTime);
+
+    @Query("SELECT strftime('%H', timestamp / 1000, 'unixepoch') AS bucketLabel, " +
+            "SUM(totalAmount) AS bucketTotal FROM transactions " +
+            "WHERE cashierId = :cashierId AND isRefunded = 0 " +
+            "AND timestamp BETWEEN :startTime AND :endTime " +
+            "GROUP BY bucketLabel ORDER BY bucketLabel ASC")
+    List<SpendBucket> getCashierSpendByHour(long cashierId, long startTime, long endTime);
+
+    @Query("SELECT strftime('%Y-%m-%d', timestamp / 1000, 'unixepoch') AS bucketLabel, " +
+            "SUM(totalAmount) AS bucketTotal FROM transactions " +
+            "WHERE cashierId = :cashierId AND isRefunded = 0 " +
+            "AND timestamp BETWEEN :startTime AND :endTime " +
+            "GROUP BY bucketLabel ORDER BY bucketLabel ASC")
+    List<SpendBucket> getCashierSpendByDay(long cashierId, long startTime, long endTime);
+
+    @Query("SELECT strftime('%Y-%m', timestamp / 1000, 'unixepoch') AS bucketLabel, " +
+            "SUM(totalAmount) AS bucketTotal FROM transactions " +
+            "WHERE cashierId = :cashierId AND isRefunded = 0 " +
+            "AND timestamp BETWEEN :startTime AND :endTime " +
+            "GROUP BY bucketLabel ORDER BY bucketLabel ASC")
+    List<SpendBucket> getCashierSpendByMonth(long cashierId, long startTime, long endTime);
+
+    /**
+     * Plain Room POJO — aggregate columns (totalSales, saleCount) map onto
+     * these public fields by name, same trick as SpendBucket above.
+     */
+    class SalesStats {
+        public Double totalSales;
+        public int saleCount;
+    }
 
     /**
      * Plain Room POJO — the column aliases above (bucketLabel, bucketTotal)

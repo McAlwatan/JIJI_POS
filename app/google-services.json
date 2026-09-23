@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "109985198277",
+    "project_id": "jijipos",
+    "storage_bucket": "jijipos.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109985198277:android:47069e0bb7b3222cf940ac",
+        "android_client_info": {
+          "package_name": "com.example.jijipos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD73t-XPvqaXfrEHuySBJW3IDx5O0m7KAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

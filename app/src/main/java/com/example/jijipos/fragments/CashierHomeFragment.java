@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -20,15 +19,27 @@ public class CashierHomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cashier_home, container, false);
 
-        ImageButton btnNewSale = view.findViewById(R.id.btnNewSale);
+        LinearLayout btnNewSale = view.findViewById(R.id.btnNewSale);
         LinearLayout actionHistory = view.findViewById(R.id.actionHistory);
-        LinearLayout actionInventory = view.findViewById(R.id.actionInventory);
+        LinearLayout actionRefund = view.findViewById(R.id.actionRefund);
+        LinearLayout actionSyncQueue = view.findViewById(R.id.actionSyncQueue);
 
         btnNewSale.setOnClickListener(v -> navigateToSales());
-        actionHistory.setOnClickListener(v -> navigateToSales()); // Temporarily using Sales for history if needed or just placeholder
-        actionInventory.setOnClickListener(v -> {
+        actionHistory.setOnClickListener(v -> {
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, new InventoryFragment())
+                    .replace(R.id.fragmentContainer, new CashierTransactionsFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+        actionRefund.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new RefundFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+        actionSyncQueue.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new SyncQueueFragment())
                     .addToBackStack(null)
                     .commit();
         });

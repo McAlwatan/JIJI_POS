@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.jijipos.R;
+import com.google.android.material.card.MaterialCardView;
 
 public class ManagerHomeFragment extends Fragment {
 
@@ -18,12 +18,17 @@ public class ManagerHomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manager_home, container, false);
 
-        ImageButton btnReports = view.findViewById(R.id.btnReports);
+        MaterialCardView btnReports = view.findViewById(R.id.cardFabCenter);
+        LinearLayout actionTeamSales = view.findViewById(R.id.actionTeamSales);
         LinearLayout actionStaff = view.findViewById(R.id.actionStaff);
         LinearLayout actionInventoryControl = view.findViewById(R.id.actionInventoryControl);
+        LinearLayout actionReports = view.findViewById(R.id.actionReports);
 
-        btnReports.setOnClickListener(v -> {
-            // Placeholder for Reports
+        actionTeamSales.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new TeamSalesFragment())
+                    .addToBackStack(null)
+                    .commit();
         });
 
         actionStaff.setOnClickListener(v -> {
@@ -39,6 +44,22 @@ public class ManagerHomeFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+
+        actionReports.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new ManagerReportsFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        btnReports.setOnClickListener(v -> actionReports.performClick());
+
+        // Modern tactile motion: hero FAB springs in, tiles react to press
+        com.example.jijipos.UiAnim.popIn(btnReports);
+        com.example.jijipos.UiAnim.addPressScale(actionTeamSales);
+        com.example.jijipos.UiAnim.addPressScale(actionStaff);
+        com.example.jijipos.UiAnim.addPressScale(actionInventoryControl);
+        com.example.jijipos.UiAnim.addPressScale(actionReports);
 
         return view;
     }
